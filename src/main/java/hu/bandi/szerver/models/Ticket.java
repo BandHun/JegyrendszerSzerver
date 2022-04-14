@@ -1,4 +1,5 @@
 package hu.bandi.szerver.models;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,7 +7,6 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.sql.Date;
 import java.util.List;
 
@@ -43,6 +43,9 @@ public class Ticket {
 
     private Date createdAt;
     private Date deadline;
+
+    private int storyPoints;
+    private int usedStroyPoints;
 
     private TicketStatus status;
     @OneToMany
