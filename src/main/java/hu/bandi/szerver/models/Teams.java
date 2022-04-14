@@ -1,17 +1,17 @@
 package hu.bandi.szerver.models;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 
 
 /*
- * Csapat/csoport
+ * Csapat
  *
  * Szerepe, hogy csapatokat definiáljon és tartsa nyílván, hogy mely céghez tartozik és mely felhasználók tartoznak
  * hozzá. Emellett tárolja a hozzá tartozó táblákat is;
@@ -21,8 +21,8 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "groups")
-public class Group {
+@Table(name = "teams")
+public class Teams {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -37,5 +37,5 @@ public class Group {
     private Company company;
 
     @OneToOne
-    private GroupTable groupTable;
+    private TeamsTable teamsTable;
 }

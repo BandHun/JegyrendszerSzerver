@@ -1,10 +1,10 @@
 package hu.bandi.szerver.models;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import javax.persistence.Table;
 import java.util.List;
 
 
@@ -31,7 +31,7 @@ public class Company {
     @OneToMany
     private List<User> users;
     @OneToMany
-    private List<Group> groups;
+    private List<Teams> teams;
     @OneToMany
     private List<Project> projects;
 }

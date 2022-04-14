@@ -1,4 +1,5 @@
 package hu.bandi.szerver.models;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @javax.persistence.Table(name = "grouptables")
-public class GroupTable {
+public class TeamsTable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -29,7 +30,7 @@ public class GroupTable {
     private String name;
 
     @OneToOne
-    private Group group;
+    private Teams teams;
     @OneToMany
     private List<Ticket> tickets;
 }
