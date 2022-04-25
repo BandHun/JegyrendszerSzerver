@@ -15,10 +15,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
 
-    @Override
-    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        return null;
-    }
 
     @Override
     public List<User> findAllUser() {
@@ -48,5 +44,16 @@ public class UserServiceImpl implements UserService {
     private User getUser(final Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Ticket not found by id:" + id + "."));
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(final String emailaddress) throws UsernameNotFoundException {
+        final User admin = userRepository.findByEmailaddress(emailaddress);
+        if (admin == null) {
+            throw new UsernameNotFoundException("Invalid user name or password.");
+        }
+        //final ArrayList<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
+        return new org.springframework.security.core.userdetails.User(admin.getEmailaddress(), admin.getPassword(),
+                                                                      null);
     }
 }
