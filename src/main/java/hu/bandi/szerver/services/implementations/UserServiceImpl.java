@@ -51,6 +51,13 @@ public class UserServiceImpl implements UserService {
 
     }
 
+    @Override
+    public void changePassword(final Long userId, final String password) {
+        final User user = userRepository.findById(userId).orElseThrow(() -> new RuntimeException("INVALID USER ID"));
+        user.setPassword(passwordEncoder.encode("asdf"));
+        userRepository.save(user);
+    }
+
     private User getUser(final Long id) {
         return userRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Ticket not found by id:" + id + "."));
