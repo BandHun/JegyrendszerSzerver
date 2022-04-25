@@ -39,4 +39,19 @@ public class Teams implements Serializable {
 
     @OneToOne
     private TeamsTable teamsTable;
+
+    public Teams(final String name, final List<User> users, final Company company) {
+        this.name = name;
+        this.users = users;
+        this.company = company;
+        isValid = true;
+    }
+
+    public void addUser(final User user) {
+        users.add(user);
+    }
+
+    public void removeUser(final User user) {
+        users.remove(user);
+    }
 }

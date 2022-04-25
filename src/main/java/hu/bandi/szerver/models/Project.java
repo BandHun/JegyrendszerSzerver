@@ -34,4 +34,18 @@ public class Project implements Serializable {
     private Company company;
     @OneToMany
     private List<Ticket> tickets;
+
+    public Project(final String name, final Company company) {
+        this.name = name;
+        this.company = company;
+        isValid = true;
+    }
+
+    public void addTicket(final Ticket ticket) {
+        tickets.add(ticket);
+    }
+
+    public void removeTicket(final Ticket ticket) {
+        tickets.remove(ticket);
+    }
 }

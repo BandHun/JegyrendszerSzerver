@@ -6,7 +6,7 @@ public enum TicketStatus {
     TicketStatus() {
     }
 
-    public boolean isValidChange(final TicketStatus fromStatus, final TicketStatus toStatus) {
+    public static boolean isValidChange(final TicketStatus fromStatus, final TicketStatus toStatus) {
         if (toStatus == TODO) {
             return true;
         }

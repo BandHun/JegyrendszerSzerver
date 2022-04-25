@@ -30,4 +30,10 @@ public class Document implements Serializable {
 
     private String documentLocation;
     private String documentName;
+
+    public Document(final String documentLocation, final String documentName) {
+        this.documentLocation = documentLocation;
+        this.documentName = documentName;
+        isValid = true;
+    }
 }

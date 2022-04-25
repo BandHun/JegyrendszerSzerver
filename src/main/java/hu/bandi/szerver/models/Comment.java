@@ -45,4 +45,11 @@ public class Comment implements Serializable {
 
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
+
+    public Comment(final String commentMessage, final List<Document> documents, final User creator) {
+        this.commentMessage = commentMessage;
+        this.documents = documents;
+        this.creator = creator;
+        isValid = true;
+    }
 }

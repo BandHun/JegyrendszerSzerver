@@ -39,4 +39,11 @@ public class User implements Serializable {
     @ManyToOne
     @JoinColumn(name = "teams_id")
     private Teams teams;
+
+    public User(final String name, final String emailaddress, final String password, final Company company) {
+        this.name = name;
+        this.emailaddress = emailaddress;
+        this.password = password;
+        this.company = company;
+    }
 }

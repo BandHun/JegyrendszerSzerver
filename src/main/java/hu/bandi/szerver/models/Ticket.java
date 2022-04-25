@@ -9,6 +9,7 @@ import org.springframework.lang.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -48,9 +49,33 @@ public class Ticket implements Serializable {
     private int storyPoints;
     private int usedStroyPoints;
 
+    private String description;
+
     private TicketStatus status;
     @OneToMany
     private List<Document> documents;
     @OneToMany
     private List<Comment> comments;
+
+    public Ticket(final String name, final String description, @NonNull final User author, final Date deadline,
+                  final int storyPoints, final List<Document> documents) {
+        this.name = name;
+        this.description = description;
+        this.author = author;
+        this.deadline = deadline;
+        this.storyPoints = storyPoints;
+        this.documents = documents;
+        isValid = true;
+        createdAt = new java.sql.Date(System.currentTimeMillis());
+        comments = new ArrayList<Comment>();
+        status = TicketStatus.TODO;
+    }
+
+    public void addDocument(final Document document) {
+        documents.add(document);
+    }
+
+    public void removeDocument(final Document document) {
+        documents.remove(document);
+    }
 }

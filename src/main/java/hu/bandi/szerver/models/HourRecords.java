@@ -34,4 +34,11 @@ public class HourRecords implements Serializable {
     @ManyToOne
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
+
+    public HourRecords(final User user, final Ticket ticket, final long recordedhours) {
+        this.user = user;
+        this.recordedhours = recordedhours;
+        this.ticket = ticket;
+        isValid = true;
+    }
 }

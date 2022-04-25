@@ -34,4 +34,18 @@ public class TeamsTable implements Serializable {
     private Teams teams;
     @OneToMany
     private List<Ticket> tickets;
+
+    public TeamsTable(final String name, final Teams teams) {
+        this.name = name;
+        this.teams = teams;
+        isValid = true;
+    }
+
+    public void addTicket(final Ticket ticket) {
+        tickets.add(ticket);
+    }
+
+    public void removeTicket(final Ticket ticket) {
+        tickets.remove(ticket);
+    }
 }
