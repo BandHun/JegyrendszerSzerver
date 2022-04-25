@@ -1,6 +1,77 @@
 package hu.bandi.szerver.services.implementations;
 
+import hu.bandi.szerver.models.Company;
+import hu.bandi.szerver.models.Project;
+import hu.bandi.szerver.models.Teams;
+import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.repositories.CompanyRepository;
 import hu.bandi.szerver.services.interfaces.CompanyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CompanyServiceImpl implements CompanyService {
+
+    @Autowired
+    CompanyRepository companyRepository;
+
+    @Override
+    public Company addCompany(final String name) {
+        return companyRepository.save(new Company(name));
+    }
+
+    @Override
+    public void addUser(final Long comanyId, final User user) {
+        final Company toEdit = getById(comanyId);
+        toEdit.addUser(user);
+        companyRepository.save(toEdit);
+    }
+
+
+    @Override
+    public void addTeam(final Long comanyId, final Teams teams) {
+        final Company toEdit = getById(comanyId);
+        toEdit.addTeams(teams);
+        companyRepository.save(toEdit);
+    }
+
+    @Override
+    public void addProject(final Long comanyId, final Project project) {
+        final Company toEdit = getById(comanyId);
+        toEdit.addProject(project);
+        companyRepository.save(toEdit);
+    }
+
+    @Override
+    public void deleteCompany(final Long comanyId, final Company comapny) {
+        final Company toEdit = getById(comanyId);
+        toEdit.setValid(false);
+        companyRepository.save(toEdit);
+    }
+
+    @Override
+    public void deleteUser(final Long comanyId, final User user) {
+        final Company toEdit = getById(comanyId);
+        toEdit.removeUser(user);
+        companyRepository.save(toEdit);
+    }
+
+    @Override
+    public void deleteTeams(final Long comanyId, final Teams teams) {
+        final Company toEdit = getById(comanyId);
+        toEdit.removeTeams(teams);
+        companyRepository.save(toEdit);
+    }
+
+    @Override
+    public void deleteProject(final Long comanyId, final Project project) {
+        final Company toEdit = getById(comanyId);
+        toEdit.removeProject(project);
+        companyRepository.save(toEdit);
+    }
+
+    private Company getById(final Long id) {
+        return companyRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Company not found by id:" + id + "."));
+    }
 }
