@@ -4,10 +4,12 @@ import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,8 +54,8 @@ public class UserServiceImpl implements UserService {
         if (admin == null) {
             throw new UsernameNotFoundException("Invalid user name or password.");
         }
-        //final ArrayList<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
+        final ArrayList<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
         return new org.springframework.security.core.userdetails.User(admin.getEmailaddress(), admin.getPassword(),
-                                                                      null);
+                                                                      roles);
     }
 }
