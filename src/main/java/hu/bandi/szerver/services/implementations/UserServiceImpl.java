@@ -1,5 +1,6 @@
 package hu.bandi.szerver.services.implementations;
 
+import hu.bandi.szerver.configuration.WebConfig;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.UserService;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,6 +18,12 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
     @Autowired
     UserRepository userRepository;
+
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    public UserServiceImpl() {
+        passwordEncoder = WebConfig.passwordEncoder();
+    }
 
 
     @Override
