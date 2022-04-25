@@ -12,8 +12,9 @@ import java.io.Serializable;
 /*
  * Filter
  *
- * Lehetséges, hogy nem fogom használni és a guiban fogom megoldani hogy filterezett adatot kérjünk le, lehet erre az
- *  osztályra nem lesz szükség
+ * A userek különböző filtereket használhatnak majd a jegyek gyors rendezésére.
+ *
+ * Hogy pontosan milyen szűrési feltételeket fogok a usereknek engedélyezni még nem tudom.
  * */
 
 @Entity
