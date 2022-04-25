@@ -9,11 +9,13 @@ import java.util.Optional;
 
 public interface CommentService {
 
-    void addComment(String message, List<Document> documents, User user);
+    Comment addComment(String message, List<Document> documents, User user);
 
     void modifyComment(Long id, String message, List<Document> documents);
 
     void deleteComment(Long id);
+
+    Comment findById(Long id);
 
     Optional<Comment> getCommentById(Long id);
 

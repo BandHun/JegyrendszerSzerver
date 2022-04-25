@@ -5,9 +5,15 @@ import hu.bandi.szerver.models.Project;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 
+import java.util.List;
+
 public interface CompanyService {
 
     Company addCompany(String name);
+
+    List<Company> findAllCompany();
+
+    Company findById(Long id);
 
     void addUser(Long comanyId, User user);
 
@@ -15,7 +21,7 @@ public interface CompanyService {
 
     void addProject(Long comanyId, Project project);
 
-    void deleteCompany(Long comanyId, Company comapny);
+    void deleteCompany(Long comanyId);
 
     void deleteUser(Long comanyId, User user);
 

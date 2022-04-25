@@ -23,8 +23,8 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public void addComment(final String message, final List<Document> documents, final User user) {
-        commentRepository.save(new Comment(message, documents, user));
+    public Comment addComment(final String message, final List<Document> documents, final User user) {
+        return commentRepository.save(new Comment(message, documents, user));
     }
 
     @Override
@@ -63,5 +63,11 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getCommentsByIds(final List<Long> ids) {
         return commentRepository.findAllById(ids);
+    }
+
+    @Override
+    public Comment findById(final Long id) {
+        return commentRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Comment not found by id:" + id + "."));
     }
 }

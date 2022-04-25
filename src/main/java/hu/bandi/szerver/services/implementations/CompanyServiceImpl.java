@@ -9,6 +9,8 @@ import hu.bandi.szerver.services.interfaces.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CompanyServiceImpl implements CompanyService {
 
@@ -18,6 +20,16 @@ public class CompanyServiceImpl implements CompanyService {
     @Override
     public Company addCompany(final String name) {
         return companyRepository.save(new Company(name));
+    }
+
+    @Override
+    public List<Company> findAllCompany() {
+        return companyRepository.findAll();
+    }
+
+    @Override
+    public Company findById(final Long id) {
+        return getById(id);
     }
 
     @Override
@@ -43,7 +55,7 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void deleteCompany(final Long comanyId, final Company comapny) {
+    public void deleteCompany(final Long comanyId) {
         final Company toEdit = getById(comanyId);
         toEdit.setValid(false);
         companyRepository.save(toEdit);
