@@ -1,22 +1,43 @@
 package hu.bandi.szerver.services.implementations;
 
-import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.Project;
 import hu.bandi.szerver.models.Ticket;
 import hu.bandi.szerver.repositories.ProjectRepository;
+import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.ProjectService;
+import hu.bandi.szerver.special.serverfunctions.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ProjectServiceImpl implements ProjectService {
     @Autowired
     ProjectRepository projectRepository;
 
+    @Autowired
+    UserRepository userRepository;
+
 
     @Override
-    public Project newProject(final String name, final Company company) {
-        return projectRepository.save(new Project(name, company));
+    public List<Project> findAllProject() {
+        return projectRepository.findAll();
+    }
+
+    @Override
+    public Project findById(final Long id) {
+        return getProject(id);
+    }
+
+    @Override
+    public Project updateProject(final Project project) {
+        return projectRepository.save(project);
+    }
+
+    @Override
+    public Project newProject(final String name) {
+        return projectRepository.save(new Project(name, CurrentUser.getUser(userRepository).getCompany()));
     }
 
     @Override

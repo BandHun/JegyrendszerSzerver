@@ -4,9 +4,17 @@ import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.TeamsTable;
 import hu.bandi.szerver.models.User;
 
+import java.util.List;
+
 public interface TeamsService {
 
-    Teams addTeam(String name, User user);
+    List<Teams> findAllTeams();
+
+    Teams findById(Long id);
+
+    Teams updateTeams(Teams teams);
+
+    Teams addTeam(String name);
 
     void deleteTeams(Long teamsId);
 
