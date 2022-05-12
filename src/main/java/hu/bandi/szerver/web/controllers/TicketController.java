@@ -1,6 +1,7 @@
 package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.Ticket;
+import hu.bandi.szerver.models.TicketStatus;
 import hu.bandi.szerver.services.interfaces.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,6 +39,13 @@ public class TicketController {
     @PutMapping("/update")
     public ResponseEntity<Ticket> updateTicket(@RequestBody final Ticket ticket) {
         return new ResponseEntity<>(ticketService.updateTicket(ticket), HttpStatus.OK);
+    }
+
+    @PutMapping("/updateStatus/{id}")
+    public ResponseEntity<?> updateTicketStatus(@PathVariable("id") final Long id,
+                                                @RequestBody final TicketStatus toStatus) {
+        ticketService.changeTicketStatus(id, toStatus);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

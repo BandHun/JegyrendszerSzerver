@@ -35,6 +35,7 @@ public class UserController {
     public ResponseEntity<User> updateTicket(@RequestBody final User user) {
         return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
     }
+    
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteTicket(@PathVariable("id") final Long id) {

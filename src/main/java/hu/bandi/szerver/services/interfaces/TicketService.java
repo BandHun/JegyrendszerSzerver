@@ -17,5 +17,5 @@ public interface TicketService {
 
     void deleteTicket(Long ticketId);
 
-    void changeTicketStatus(Long ticketId, TicketStatus fromStatus, TicketStatus toStatus);
+    void changeTicketStatus(Long ticketId, TicketStatus toStatus);
 }

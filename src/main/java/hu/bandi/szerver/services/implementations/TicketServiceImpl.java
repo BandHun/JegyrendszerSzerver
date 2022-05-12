@@ -49,12 +49,12 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void changeTicketStatus(final Long ticketId, final TicketStatus fromStatus, final TicketStatus toStatus) {
-        if (!TicketStatus.isValidChange(fromStatus, toStatus)) {
-            throw new RuntimeException(
-                    "Invalid status change from " + fromStatus.name() + " to " + toStatus.name() + ".");
-        }
+    public void changeTicketStatus(final Long ticketId, final TicketStatus toStatus) {
         final Ticket toEdit = getTicket(ticketId);
+        if (!TicketStatus.isValidChange(toEdit.getStatus(), toStatus)) {
+            throw new RuntimeException(
+                    "Invalid status change from " + toEdit.getStatus() + " to " + toStatus.name() + ".");
+        }
         toEdit.setStatus(toStatus);
         ticketRepository.save(toEdit);
     }
