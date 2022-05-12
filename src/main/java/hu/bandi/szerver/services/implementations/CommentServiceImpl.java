@@ -1,7 +1,6 @@
 package hu.bandi.szerver.services.implementations;
 
 import hu.bandi.szerver.models.Comment;
-import hu.bandi.szerver.models.Document;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.CommentRepository;
 import hu.bandi.szerver.services.interfaces.CommentService;
@@ -23,16 +22,16 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Comment addComment(final String message, final List<Document> documents, final User user) {
-        return commentRepository.save(new Comment(message, documents, user));
+    public Comment addComment(final String message, final User user) {
+        return commentRepository.save(new Comment(message, user));
     }
 
     @Override
-    public void modifyComment(final Long id, final String message, final List<Document> validDocuments) {
+    public void modifyComment(final Long id, final String message) {
         final Comment toEdit = commentRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Comment not found by id:" + id + "."));
         toEdit.setCommentMessage(message);
-        final List<Document> commentDocuments = toEdit.getDocuments();
+        /*final List<Document> commentDocuments = toEdit.getDocuments();
         final List<Long> toInvalidate = commentDocuments.stream().map(
                 document -> validDocuments.contains(document) ? null : document.getId()).collect(Collectors.toList());
         documentService.deleteDocuments(toInvalidate);
@@ -41,7 +40,7 @@ public class CommentServiceImpl implements CommentService {
                 document -> commentDocuments.contains(document) ? null : document).collect(Collectors.toList());
         documentService.addDocuments(newDocuments);
 
-        toEdit.setDocuments(newDocuments);
+        toEdit.setDocuments(newDocuments);*/
         commentRepository.save(toEdit);
     }
 

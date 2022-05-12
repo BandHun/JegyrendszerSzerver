@@ -1,38 +1,33 @@
 package hu.bandi.szerver.models;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.io.Serializable;
-
-
-
-/*
- * Filter
- *
- * A userek különböző filtereket használhatnak majd a jegyek gyors rendezésére.
- *
- * */
+import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "filters")
-public class Filter implements Serializable {
+@Table(name = "sprint")
+public class Sprint {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
+
     private boolean isValid;
 
-    @ManyToOne
-    private User author;
+    private Date startDate;
 
-    @ManyToOne
-    private User assignedToUser;
+    private Date endDate;
+
+    @OneToMany
+    private List<Ticket> tickets;
 
 
 }

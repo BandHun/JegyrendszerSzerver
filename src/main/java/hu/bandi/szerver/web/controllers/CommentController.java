@@ -8,10 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/comment")
@@ -33,12 +29,9 @@ public class CommentController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Comment> addComment(@RequestBody final String name,
-                                              @RequestBody final List<MultipartFile> documents) {
-        //TODO: fájlok mentése és dokumentumba szervezése
-        return new ResponseEntity<>(
-                commentService.addComment(name, new ArrayList<>(), CurrentUser.getUser(userRepository)),
-                HttpStatus.CREATED);
+    public ResponseEntity<Comment> addComment(@RequestBody final String name) {
+        return new ResponseEntity<>(commentService.addComment(name, CurrentUser.getUser(userRepository)),
+                                    HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")

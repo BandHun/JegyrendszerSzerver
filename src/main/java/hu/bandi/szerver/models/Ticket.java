@@ -57,14 +57,16 @@ public class Ticket implements Serializable {
     @OneToMany
     private List<Comment> comments;
 
+    @ManyToOne
+    private Sprint sprint;
+
     public Ticket(final String name, final String description, @NonNull final User author, final Date deadline,
-                  final int storyPoints, final List<Document> documents) {
+                  final int storyPoints) {
         this.name = name;
         this.description = description;
         this.author = author;
         this.deadline = deadline;
         this.storyPoints = storyPoints;
-        this.documents = documents;
         isValid = true;
         createdAt = new java.sql.Date(System.currentTimeMillis());
         comments = new ArrayList<Comment>();
