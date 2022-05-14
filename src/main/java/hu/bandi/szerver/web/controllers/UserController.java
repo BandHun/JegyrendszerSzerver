@@ -18,19 +18,12 @@ public class UserController {
 
     @GetMapping("/all")
     public ResponseEntity<List<User>> getAllTicket() {
-        System.out.println("AAAAAAAAAAAAAAAAAAA");
-        System.out.println(userService.findAllUser().size());
         return new ResponseEntity<>(userService.findAllUser(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") final Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
-    }
-
-    @PostMapping("/add")
-    public ResponseEntity<User> addUser(@RequestBody final User user) {
-        return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/update")

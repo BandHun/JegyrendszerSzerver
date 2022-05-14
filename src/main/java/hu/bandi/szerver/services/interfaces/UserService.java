@@ -10,7 +10,7 @@ public interface UserService extends UserDetailsService {
 
     User findById(Long id);
 
-    User addUser(User user);
+    User registerUser(User user);
 
     User updateUser(User user);
 
