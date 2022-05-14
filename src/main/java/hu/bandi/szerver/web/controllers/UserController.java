@@ -17,7 +17,9 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/all")
-    public ResponseEntity<List<User>> getAllUser() {
+    public ResponseEntity<List<User>> getAllTicket() {
+        System.out.println("AAAAAAAAAAAAAAAAAAA");
+        System.out.println(userService.findAllUser().size());
         return new ResponseEntity<>(userService.findAllUser(), HttpStatus.OK);
     }
 

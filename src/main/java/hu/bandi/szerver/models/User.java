@@ -1,5 +1,6 @@
 package hu.bandi.szerver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,7 @@ public class User implements Serializable {
     private String name;
     private String emailaddress;
 
+    @JsonIgnore
     private String password;
 
     @ManyToOne
