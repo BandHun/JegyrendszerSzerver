@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -39,6 +40,9 @@ public class Company implements Serializable {
     public Company(final String name) {
         this.name = name;
         isValid = true;
+        users = new ArrayList<>();
+        teams = new ArrayList<>();
+        projects = new ArrayList<>();
     }
 
     public void addUser(final User user) {

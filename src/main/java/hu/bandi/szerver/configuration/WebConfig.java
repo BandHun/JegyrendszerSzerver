@@ -40,11 +40,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         //@formatter:off
         http.cors().and().csrf().disable();
-        http.httpBasic().and().authorizeRequests().antMatchers("/resetpassword1","/**").permitAll().anyRequest().authenticated().and
-         ().formLogin().loginPage(
-                        "/login").permitAll().and().logout().logoutUrl("/logout").deleteCookies(
-                        "JSESSIONID").logoutRequestMatcher(new AntPathRequestMatcher("/logout")).invalidateHttpSession(
-                        true).clearAuthentication(true).logoutSuccessUrl("/login?logout").permitAll();
+        http.authorizeRequests().antMatchers("/public/**").permitAll().anyRequest().authenticated().and().httpBasic();
         //@formatter:on
     }
 }

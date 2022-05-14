@@ -1,6 +1,7 @@
 package hu.bandi.szerver.web.controllers;
 
 
+import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,11 @@ public class UserController {
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody final User user) {
         return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+    }
+
+    @PutMapping("/addcompany")
+    public ResponseEntity<User> addcompany(@RequestBody final Company company) {
+        return new ResponseEntity<>(userService.addCompany(company), HttpStatus.OK);
     }
 
 

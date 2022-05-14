@@ -1,9 +1,14 @@
 package hu.bandi.szerver.services.implementations;
 
 import hu.bandi.szerver.configuration.WebConfig;
+import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.UserService;
+import hu.bandi.szerver.special.serverfunctions.CurrentUser;
+import hu.bandi.szerver.web.controllers.ResetPasswordController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,6 +21,8 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     UserRepository userRepository;
 
@@ -37,19 +44,26 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(final User user, final String password) {
-        if (userRepository.findByEmailaddress(user.getEmailaddress()) != null) {
+    public User registerUser(final String name, final String emailaddress, final String password) {
+        if (userRepository.findByEmailaddress(emailaddress) != null) {
             throw new RuntimeException("Admin exist with this email");
         }
-        final User localUser = user;
-        localUser.setPassword(passwordEncoder.encode(password));
+        final User user = new User(name,emailaddress,password,null);
+        user.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
-        return localUser;
+        return user;
     }
 
     @Override
     public User updateUser(final User user) {
         return userRepository.save(user);
+    }
+
+    @Override
+    public User addCompany(Company company) {
+        User current = CurrentUser.getUser(userRepository);
+        current.setCompany(company);
+        return userRepository.save(current);
     }
 
     @Override
@@ -73,8 +87,12 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(final String emailaddress) throws UsernameNotFoundException {
         final User admin = userRepository.findByEmailaddress(emailaddress);
         if (admin == null) {
+            logger.info("BAJ");
             throw new UsernameNotFoundException("Invalid user name or password.");
         }
+        logger.info("BBBBBBBBBBBBBBBBBBBBBBBB");
+        logger.info(emailaddress);
+        logger.info(admin.getEmailaddress());
         final ArrayList<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
         return new org.springframework.security.core.userdetails.User(admin.getEmailaddress(), admin.getPassword(),
                                                                       roles);

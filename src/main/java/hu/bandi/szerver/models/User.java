@@ -30,7 +30,6 @@ public class User implements Serializable {
     private String name;
     private String emailaddress;
 
-    @JsonIgnore
     private String password;
 
     @ManyToOne

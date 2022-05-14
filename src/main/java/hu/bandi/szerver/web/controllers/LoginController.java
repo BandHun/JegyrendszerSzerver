@@ -1,6 +1,8 @@
 package hu.bandi.szerver.web.controllers;
 
+import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.UserService;
+import hu.bandi.szerver.special.serverfunctions.CurrentUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +19,13 @@ public class LoginController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    UserRepository userRepository;
+
     @GetMapping()
     public boolean login() {
+        logger.info("AAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        logger.info(CurrentUser.getUser(userRepository).getEmailaddress());
         return true;
     }
 }
