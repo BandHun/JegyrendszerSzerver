@@ -37,12 +37,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(final User user) {
+    public User registerUser(final User user, final String password) {
         if (userRepository.findByEmailaddress(user.getEmailaddress()) != null) {
             throw new RuntimeException("Admin exist with this email");
         }
         final User localUser = user;
-        localUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        localUser.setPassword(passwordEncoder.encode(password));
         userRepository.save(user);
         return localUser;
     }
