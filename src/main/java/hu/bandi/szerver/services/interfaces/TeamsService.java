@@ -10,6 +10,8 @@ public interface TeamsService {
 
     List<Teams> findAllTeams();
 
+    public List<Teams> findAllByCompanyIdTeams(Long id);
+
     Teams findById(Long id);
 
     Teams updateTeams(Teams teams);

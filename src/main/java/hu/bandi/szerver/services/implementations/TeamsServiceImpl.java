@@ -1,12 +1,13 @@
 package hu.bandi.szerver.services.implementations;
 
+import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.TeamsTable;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.TeamsRepository;
-import hu.bandi.szerver.repositories.UserRepository;
+import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.TeamsService;
-import hu.bandi.szerver.special.serverfunctions.CurrentUser;
+import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +20,20 @@ public class TeamsServiceImpl implements TeamsService {
     TeamsRepository teamsRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
+
+    @Autowired
+    CompanyService companyService;
 
     @Override
     public List<Teams> findAllTeams() {
         return teamsRepository.findAll();
+    }
+
+    @Override
+    public List<Teams> findAllByCompanyIdTeams(final Long id) {
+        final Company company = companyService.findById(id);
+        return teamsRepository.findTeamsByCompany(company);
     }
 
     @Override
@@ -38,8 +48,11 @@ public class TeamsServiceImpl implements TeamsService {
 
     @Override
     public Teams addTeam(final String name) {
-        final User user = CurrentUser.getUser(userRepository);
-        return teamsRepository.save(new Teams(name, Arrays.asList(user), user.getCompany()));
+        final User user = userService.getCurrentUser();
+        final Teams newTeam = teamsRepository.save(new Teams(name, Arrays.asList(user), user.getCompany()));
+        userService.addTeam(newTeam);
+        companyService.addTeam(user.getCompany(), newTeam);
+        return newTeam;
     }
 
     @Override

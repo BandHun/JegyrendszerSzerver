@@ -3,9 +3,8 @@ package hu.bandi.szerver.services.implementations;
 import hu.bandi.szerver.models.Ticket;
 import hu.bandi.szerver.models.TicketStatus;
 import hu.bandi.szerver.repositories.TicketRepository;
-import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.TicketService;
-import hu.bandi.szerver.special.serverfunctions.CurrentUser;
+import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class TicketServiceImpl implements TicketService {
     TicketRepository ticketRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
 
     @Override
@@ -32,7 +31,7 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket addTicket(final Ticket ticket) {
-        ticket.setAuthor(CurrentUser.getUser(userRepository));
+        ticket.setAuthor(userService.getCurrentUser());
         return ticketRepository.save(ticket);
     }
 

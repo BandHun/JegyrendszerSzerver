@@ -17,7 +17,7 @@ public interface CompanyService {
 
     void addUser(Long comanyId, User user);
 
-    void addTeam(Long comanyId, Teams teams);
+    void addTeam(Company company, Teams teams);
 
     void addProject(Long comanyId, Project project);
 

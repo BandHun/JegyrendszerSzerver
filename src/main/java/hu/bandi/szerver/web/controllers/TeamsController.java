@@ -20,8 +20,8 @@ public class TeamsController {
         this.teamsService = teamsService;
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<Teams>> getAllTeams() {
+    @GetMapping("/allbycompany")
+    public ResponseEntity<List<Teams>> getAllTeams(@RequestBody final Long companyId) {
         return new ResponseEntity<>(teamsService.findAllTeams(), HttpStatus.OK);
     }
 

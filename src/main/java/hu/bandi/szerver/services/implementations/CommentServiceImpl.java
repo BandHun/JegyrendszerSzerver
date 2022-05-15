@@ -31,16 +31,6 @@ public class CommentServiceImpl implements CommentService {
         final Comment toEdit = commentRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Comment not found by id:" + id + "."));
         toEdit.setCommentMessage(message);
-        /*final List<Document> commentDocuments = toEdit.getDocuments();
-        final List<Long> toInvalidate = commentDocuments.stream().map(
-                document -> validDocuments.contains(document) ? null : document.getId()).collect(Collectors.toList());
-        documentService.deleteDocuments(toInvalidate);
-
-        final List<Document> newDocuments = validDocuments.stream().map(
-                document -> commentDocuments.contains(document) ? null : document).collect(Collectors.toList());
-        documentService.addDocuments(newDocuments);
-
-        toEdit.setDocuments(newDocuments);*/
         commentRepository.save(toEdit);
     }
 

@@ -1,6 +1,7 @@
 package hu.bandi.szerver.services.interfaces;
 
 import hu.bandi.szerver.models.Company;
+import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -17,8 +18,12 @@ public interface UserService extends UserDetailsService {
 
     User addCompany(Company company);
 
+    User addTeam(Teams team);
+
     void deleteUser(Long userId);
 
     void changePassword(Long userId, String password);
+
+    public User getCurrentUser();
 
 }

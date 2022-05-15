@@ -5,9 +5,8 @@ import hu.bandi.szerver.models.Project;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.CompanyRepository;
-import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.CompanyService;
-import hu.bandi.szerver.special.serverfunctions.CurrentUser;
+import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +19,13 @@ public class CompanyServiceImpl implements CompanyService {
     CompanyRepository companyRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
     @Override
     public Company addCompany(final String name) {
-        User currentUser = CurrentUser.getUser(userRepository);
-        System.out.println(currentUser.getEmailaddress());
-        Company newCompany = new Company(name);
+        final Company newCompany = new Company(name);
         companyRepository.save(newCompany);
-        currentUser.setCompany(newCompany);
-        userRepository.save(currentUser);
-        System.out.println("VISSZA");
+        userService.addCompany(newCompany);
         return newCompany;
     }
 
@@ -53,10 +48,9 @@ public class CompanyServiceImpl implements CompanyService {
 
 
     @Override
-    public void addTeam(final Long comanyId, final Teams teams) {
-        final Company toEdit = getById(comanyId);
-        toEdit.addTeams(teams);
-        companyRepository.save(toEdit);
+    public void addTeam(final Company company, final Teams teams) {
+        company.addTeams(teams);
+        companyRepository.save(company);
     }
 
     @Override

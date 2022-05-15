@@ -1,5 +1,6 @@
 package hu.bandi.szerver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,6 +29,7 @@ public class Document implements Serializable {
     private Long id;
     private boolean isValid;
 
+    @JsonIgnore
     private String documentLocation;
     private String documentName;
 

@@ -3,9 +3,8 @@ package hu.bandi.szerver.services.implementations;
 import hu.bandi.szerver.models.Project;
 import hu.bandi.szerver.models.Ticket;
 import hu.bandi.szerver.repositories.ProjectRepository;
-import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.ProjectService;
-import hu.bandi.szerver.special.serverfunctions.CurrentUser;
+import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ public class ProjectServiceImpl implements ProjectService {
     ProjectRepository projectRepository;
 
     @Autowired
-    UserRepository userRepository;
+    UserService userService;
 
 
     @Override
@@ -37,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project newProject(final String name) {
-        return projectRepository.save(new Project(name, CurrentUser.getUser(userRepository).getCompany()));
+        return projectRepository.save(new Project(name, userService.getCurrentUser().getCompany()));
     }
 
     @Override
