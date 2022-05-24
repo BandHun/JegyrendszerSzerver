@@ -1,8 +1,10 @@
 package hu.bandi.szerver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.Immutable;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -33,7 +35,7 @@ public class Ticket implements Serializable {
     private Long id;
     boolean isValid;
 
-    private String name;
+    private String title;
     @ManyToOne
     @JoinColumn(name = "author_ID")
     @NonNull
@@ -41,10 +43,14 @@ public class Ticket implements Serializable {
     @ManyToOne
     @JoinColumn(name = "assigned_ID")
     @Nullable
-    private User assigned;
+    private User assignee;
+
+    @JoinColumn(updatable = false)
+    @JsonIgnore
+    @ManyToOne
+    private Company company;
 
     private Date createdAt;
-    private Date deadline;
 
     private int storyPoints;
     private int usedStroyPoints;
@@ -58,15 +64,19 @@ public class Ticket implements Serializable {
     private List<Comment> comments;
 
     @ManyToOne
+    private Project project;
+
+    @ManyToOne
     private Sprint sprint;
 
-    public Ticket(final String name, final String description, @NonNull final User author, final Date deadline,
-                  final int storyPoints) {
-        this.name = name;
+    public Ticket(final String title, final String description, @NonNull final User author,
+                  final int storyPoints, Company company) {
+        this.title = title;
         this.description = description;
         this.author = author;
-        this.deadline = deadline;
         this.storyPoints = storyPoints;
+        this.company = company;
+        project=null;
         isValid = true;
         createdAt = new java.sql.Date(System.currentTimeMillis());
         comments = new ArrayList<Comment>();
@@ -79,5 +89,13 @@ public class Ticket implements Serializable {
 
     public void removeDocument(final Document document) {
         documents.remove(document);
+    }
+
+    public void addComment(final Comment comment) {
+        comments.add(comment);
+    }
+
+    public void removeComment(final Comment comment) {
+        comments.remove(comment);
     }
 }

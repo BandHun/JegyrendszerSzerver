@@ -5,6 +5,7 @@ import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.UserRepository;
+import hu.bandi.szerver.services.interfaces.TeamsService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> findAllUser() {
         return userRepository.findAll();
+    }
+
+    @Override
+    public List<User> findAllByTeam(Teams teams) {
+        return userRepository.findByTeams(teams);
+    }
+
+    @Override
+    public List<User> findAllByCompany(Company company) {
+        return userRepository.findByCompany(company);
     }
 
     @Override
@@ -74,6 +85,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User removeTeam(User user) {
+        user.setTeams(null);
+        return userRepository.save(user);
+    }
+
+
+    @Override
     public void deleteUser(final Long userId) {
         userRepository.deleteById(userId);
     }
@@ -87,7 +105,7 @@ public class UserServiceImpl implements UserService {
 
     private User getUser(final Long id) {
         return userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Ticket not found by id:" + id + "."));
+                () -> new RuntimeException("User not found by id:" + id + "."));
     }
 
     @Override

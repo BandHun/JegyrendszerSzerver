@@ -10,6 +10,9 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
     List<User> findAllUser();
 
+    List<User> findAllByTeam(Teams teams);
+    List<User> findAllByCompany(Company company);
+
     User findById(Long id);
 
     User registerUser(String name, String emailaddress, String password);
@@ -19,6 +22,8 @@ public interface UserService extends UserDetailsService {
     User addCompany(Company company);
 
     User addTeam(Teams team);
+
+    User removeTeam(User user);
 
     void deleteUser(Long userId);
 

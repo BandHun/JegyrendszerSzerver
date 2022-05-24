@@ -31,27 +31,17 @@ public class Teams implements Serializable {
     private boolean isValid;
 
     private String name;
-    @OneToMany
-    private List<User> users = new ArrayList<>();
-    @ManyToOne
-    @JoinColumn(name = "company_id")
-    private Company company;
 
     @OneToOne
     private TeamsTable teamsTable;
 
-    public Teams(final String name, final List<User> users, final Company company) {
+    public Teams(final String name) {
         this.name = name;
-        this.users = users;
-        this.company = company;
         isValid = true;
     }
 
-    public void addUser(final User user) {
-        users.add(user);
-    }
-
-    public void removeUser(final User user) {
-        users.remove(user);
+    @Override
+    public String toString(){
+        return "Teams{id="+id+", name="+name+"}";
     }
 }

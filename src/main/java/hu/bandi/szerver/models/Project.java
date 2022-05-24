@@ -1,5 +1,6 @@
 package hu.bandi.szerver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,9 +30,12 @@ public class Project implements Serializable {
     private boolean isValid;
 
     private String name;
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @JsonIgnore
     @OneToMany
     private List<Ticket> tickets;
 

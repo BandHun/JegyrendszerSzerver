@@ -1,7 +1,6 @@
 package hu.bandi.szerver.services.implementations;
 
-import hu.bandi.szerver.models.Ticket;
-import hu.bandi.szerver.models.TicketStatus;
+import hu.bandi.szerver.models.*;
 import hu.bandi.szerver.repositories.TicketRepository;
 import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
@@ -30,14 +29,45 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public Ticket addTicket(final Ticket ticket) {
-        ticket.setAuthor(userService.getCurrentUser());
-        return ticketRepository.save(ticket);
+    public List<Ticket> findByCompany(Company company) {
+        System.out.println(company.getUsers());
+        return ticketRepository.findByAuthorIn(company.getUsers());
+    }
+
+    @Override
+    public Ticket addTicket(String title, int storyPoint, String description) {
+        User currentUser = userService.getCurrentUser();
+        Ticket newTicket = new Ticket(title,description, currentUser , storyPoint, currentUser.getCompany());
+        return ticketRepository.save(newTicket);
+    }
+
+    @Override
+    public Ticket assigneToUser(Long id, User user) {
+        Ticket edit = getTicket(id);
+        edit.setAssignee(user);
+        return ticketRepository.save(edit);
+    }
+
+    @Override
+    public Ticket addToProject(Long id, Project project) {
+        Ticket edit = getTicket(id);
+        edit.setProject(project);
+        System.out.println("AAAAAAAAAAAAAAA");
+        System.out.println(project);
+        return ticketRepository.save(edit);
     }
 
     @Override
     public Ticket updateTicket(final Ticket ticket) {
+        System.out.println(ticket);
         return ticketRepository.save(ticket);
+    }
+
+    @Override
+    public void addComment(Long ticketId, Comment comment) {
+        Ticket toAddcomment = getTicket(ticketId);
+        toAddcomment.addComment(comment);
+        ticketRepository.save(toAddcomment);
     }
 
     @Override

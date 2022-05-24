@@ -33,7 +33,7 @@ public class TeamsServiceImpl implements TeamsService {
     @Override
     public List<Teams> findAllByCompanyIdTeams(final Long id) {
         final Company company = companyService.findById(id);
-        return teamsRepository.findTeamsByCompany(company);
+        return company.getTeams();
     }
 
     @Override
@@ -49,8 +49,11 @@ public class TeamsServiceImpl implements TeamsService {
     @Override
     public Teams addTeam(final String name) {
         final User user = userService.getCurrentUser();
-        final Teams newTeam = teamsRepository.save(new Teams(name, Arrays.asList(user), user.getCompany()));
+        Teams newTeam = new Teams(name);
+        teamsRepository.save(newTeam);
+        userService.removeTeam(user);
         userService.addTeam(newTeam);
+        teamsRepository.save(newTeam);
         companyService.addTeam(user.getCompany(), newTeam);
         return newTeam;
     }
@@ -66,20 +69,6 @@ public class TeamsServiceImpl implements TeamsService {
     public void setTable(final Long teamsId, final TeamsTable table) {
         final Teams toDelete = getTeams(teamsId);
         toDelete.setTeamsTable(table);
-        teamsRepository.save(toDelete);
-    }
-
-    @Override
-    public void addUser(final Long teamsId, final User user) {
-        final Teams toDelete = getTeams(teamsId);
-        toDelete.addUser(user);
-        teamsRepository.save(toDelete);
-    }
-
-    @Override
-    public void removeUser(final Long teamsId, final User user) {
-        final Teams toDelete = getTeams(teamsId);
-        toDelete.removeUser(user);
         teamsRepository.save(toDelete);
     }
 

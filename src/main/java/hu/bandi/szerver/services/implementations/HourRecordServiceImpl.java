@@ -8,6 +8,9 @@ import hu.bandi.szerver.services.interfaces.HourRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
+import java.util.List;
+
 @Service
 public class HourRecordServiceImpl implements HourRecordService {
 
@@ -15,8 +18,13 @@ public class HourRecordServiceImpl implements HourRecordService {
     HourRecordRepository hourRecordRepository;
 
     @Override
-    public void createHourRecord(final User user, final Ticket ticket, final long hours) {
-        hourRecordRepository.save(new HourRecords(user, ticket, hours));
+    public List<HourRecords> getByTicket(Long id) {
+        return hourRecordRepository.findByTicketId(id);
+    }
+
+    @Override
+    public HourRecords createHourRecord(final User user, final Ticket ticket, Date toDate, final long hours) {
+        return hourRecordRepository.save(new HourRecords(user, ticket, toDate,hours));
     }
 
     @Override
@@ -33,5 +41,16 @@ public class HourRecordServiceImpl implements HourRecordService {
                 () -> new RuntimeException("Hour record not found by id:" + recordId + "."));
         toEdit.setValid(false);
         hourRecordRepository.save(toEdit);
+    }
+
+    @Override
+    public long sumHoursForUser(Long userId) {
+        List<HourRecords> hours = hourRecordRepository.findByUser_Id(userId);
+        long sum = 0;
+        for (HourRecords hour:hours
+             ) {
+            sum+=hour.getRecordedhours();
+        }
+        return sum;
     }
 }

@@ -21,8 +21,4 @@ public interface TeamsService {
     void deleteTeams(Long teamsId);
 
     void setTable(Long teamsId, TeamsTable table);
-
-    void addUser(Long teamsId, User user);
-
-    void removeUser(Long teamsId, User user);
 }

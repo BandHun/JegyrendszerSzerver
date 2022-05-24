@@ -30,15 +30,14 @@ public class User implements Serializable {
     private String name;
     private String emailaddress;
 
+    @JsonIgnore
     private String password;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
 
-
     @ManyToOne
-    @JoinColumn(name = "teams_id")
     private Teams teams;
 
     public User(final String name, final String emailaddress, final String password, final Company company) {
@@ -47,4 +46,14 @@ public class User implements Serializable {
         this.password = password;
         this.company = company;
     }
+
+    /*@Override
+    public String toString(){
+        return "User{" +
+                "id="+id+
+                ", name='"+name+'\''+
+                ", emailaddress='"+emailaddress+'\''+
+                ", company='"+company+'\''+
+                ", teams='"+teams +'}';
+    }/**/
 }

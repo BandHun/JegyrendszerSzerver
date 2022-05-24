@@ -1,7 +1,6 @@
 package hu.bandi.szerver.services.interfaces;
 
-import hu.bandi.szerver.models.Ticket;
-import hu.bandi.szerver.models.TicketStatus;
+import hu.bandi.szerver.models.*;
 
 import java.util.List;
 
@@ -11,9 +10,16 @@ public interface TicketService {
 
     Ticket findById(Long id);
 
-    Ticket addTicket(Ticket ticket);
+    List<Ticket> findByCompany(Company company);
+
+    Ticket addTicket(String title, int storyPoint, String description);
+
+    Ticket assigneToUser(Long id, User user);
+
+    Ticket addToProject(Long id, Project project);
 
     Ticket updateTicket(Ticket ticket);
+    void addComment(Long ticketId, Comment comment);
 
     void deleteTicket(Long ticketId);
 

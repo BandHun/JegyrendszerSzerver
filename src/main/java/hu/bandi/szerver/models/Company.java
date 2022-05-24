@@ -1,5 +1,6 @@
 package hu.bandi.szerver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,10 +31,13 @@ public class Company implements Serializable {
     private boolean isValid;
 
     private String name;
+    @JsonIgnore
     @OneToMany
     private List<User> users;
+    @JsonIgnore
     @OneToMany
     private List<Teams> teams;
+    @JsonIgnore
     @OneToMany
     private List<Project> projects;
 
@@ -67,5 +71,12 @@ public class Company implements Serializable {
 
     public void removeProject(final Project project) {
         projects.remove(project);
+    }
+
+    @Override
+    public String toString(){
+        return "Company{" +
+                "id="+id+
+                ", name='"+ name +'}';
     }
 }

@@ -2,6 +2,7 @@ package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.services.interfaces.TeamsService;
+import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +17,16 @@ public class TeamsController {
     @Autowired
     private final TeamsService teamsService;
 
+    @Autowired
+    UserService userService;
+
     public TeamsController(final TeamsService teamsService) {
         this.teamsService = teamsService;
     }
 
     @GetMapping("/allbycompany")
-    public ResponseEntity<List<Teams>> getAllTeams(@RequestBody final Long companyId) {
-        return new ResponseEntity<>(teamsService.findAllTeams(), HttpStatus.OK);
+    public ResponseEntity<List<Teams>> getAllTeams() {
+        return new ResponseEntity<>(teamsService.findAllByCompanyIdTeams(userService.getCurrentUser().getCompany().getId()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -37,7 +41,7 @@ public class TeamsController {
 
     @PutMapping("/update")
     public ResponseEntity<Teams> updateTeams(@RequestBody final Teams teams) {
-        return new ResponseEntity<>(teamsService.updateTeams(teams), HttpStatus.OK);
+        return new ResponseEntity<Teams>(teamsService.updateTeams(teams), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 
 
 
@@ -27,6 +28,8 @@ public class HourRecords implements Serializable {
     private Long id;
     private boolean isValid;
 
+    private Date toDate;
+
     @ManyToOne
     @JoinColumn(name = "user_ID")
     private User user;
@@ -35,10 +38,11 @@ public class HourRecords implements Serializable {
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
-    public HourRecords(final User user, final Ticket ticket, final long recordedhours) {
+    public HourRecords(final User user, final Ticket ticket, Date toDate,final long recordedhours) {
         this.user = user;
         this.recordedhours = recordedhours;
         this.ticket = ticket;
+        this.toDate=toDate;
         isValid = true;
     }
 }

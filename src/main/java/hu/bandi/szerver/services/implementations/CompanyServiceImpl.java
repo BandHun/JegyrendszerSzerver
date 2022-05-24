@@ -23,8 +23,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company addCompany(final String name) {
-        final Company newCompany = new Company(name);
-        companyRepository.save(newCompany);
+        Company newCompany =companyRepository.save( new Company(name));
         userService.addCompany(newCompany);
         return newCompany;
     }

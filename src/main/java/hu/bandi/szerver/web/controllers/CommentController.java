@@ -2,6 +2,7 @@ package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.Comment;
 import hu.bandi.szerver.services.interfaces.CommentService;
+import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +18,9 @@ public class CommentController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    TicketService ticketService;
+
 
     public CommentController(final CommentService commentService) {
         this.commentService = commentService;
@@ -27,9 +31,11 @@ public class CommentController {
         return new ResponseEntity<>(commentService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Comment> addComment(@RequestBody final String name) {
-        return new ResponseEntity<>(commentService.addComment(name, userService.getCurrentUser()), HttpStatus.CREATED);
+    @PostMapping("/add/{ticketid}")
+    public ResponseEntity<Comment> addComment(@PathVariable("ticketid") final Long ticketid,@RequestBody final String name) {
+        Comment newComment = commentService.addComment(name, userService.getCurrentUser());
+        ticketService.addComment(ticketid,newComment);
+        return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/delete/{id}")
