@@ -5,7 +5,6 @@ import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.UserRepository;
-import hu.bandi.szerver.services.interfaces.TeamsService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,12 +39,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> findAllByTeam(Teams teams) {
+    public List<User> findAllByTeam(final Teams teams) {
         return userRepository.findByTeams(teams);
     }
 
     @Override
-    public List<User> findAllByCompany(Company company) {
+    public List<User> findAllByCompany(final Company company) {
         return userRepository.findByCompany(company);
     }
 
@@ -85,7 +84,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User removeTeam(User user) {
+    public User removeTeam(final User user) {
         user.setTeams(null);
         return userRepository.save(user);
     }
@@ -104,8 +103,7 @@ public class UserServiceImpl implements UserService {
     }
 
     private User getUser(final Long id) {
-        return userRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("User not found by id:" + id + "."));
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found by id:" + id + "."));
     }
 
     @Override

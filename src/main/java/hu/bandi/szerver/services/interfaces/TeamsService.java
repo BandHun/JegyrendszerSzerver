@@ -2,7 +2,6 @@ package hu.bandi.szerver.services.interfaces;
 
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.TeamsTable;
-import hu.bandi.szerver.models.User;
 
 import java.util.List;
 

@@ -26,7 +26,8 @@ public class TeamsController {
 
     @GetMapping("/allbycompany")
     public ResponseEntity<List<Teams>> getAllTeams() {
-        return new ResponseEntity<>(teamsService.findAllByCompanyIdTeams(userService.getCurrentUser().getCompany().getId()), HttpStatus.OK);
+        return new ResponseEntity<>(
+                teamsService.findAllByCompanyIdTeams(userService.getCurrentUser().getCompany().getId()), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

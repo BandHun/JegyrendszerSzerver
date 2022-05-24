@@ -25,16 +25,17 @@ public class CommentController {
     public CommentController(final CommentService commentService) {
         this.commentService = commentService;
     }
-
+ 
     @GetMapping("/{id}")
     public ResponseEntity<Comment> getCommentById(@PathVariable("id") final Long id) {
         return new ResponseEntity<>(commentService.findById(id), HttpStatus.OK);
     }
 
     @PostMapping("/add/{ticketid}")
-    public ResponseEntity<Comment> addComment(@PathVariable("ticketid") final Long ticketid,@RequestBody final String name) {
+    public ResponseEntity<Comment> addComment(@PathVariable("ticketid") final Long ticketid,
+                                              @RequestBody final String name) {
         Comment newComment = commentService.addComment(name, userService.getCurrentUser());
-        ticketService.addComment(ticketid,newComment);
+        ticketService.addComment(ticketid, newComment);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
 

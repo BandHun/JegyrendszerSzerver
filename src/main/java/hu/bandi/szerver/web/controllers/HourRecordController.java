@@ -1,10 +1,7 @@
 package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.HourRecords;
-import hu.bandi.szerver.models.Ticket;
-import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.HourRecordRepository;
-import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.HourRecordService;
 import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
@@ -35,21 +32,23 @@ public class HourRecordController {
 
 
     @GetMapping("/getforticket/{ticketid}")
-    public ResponseEntity<List<HourRecords>> getAllHoursByTicket(@PathVariable("ticketid") Long ticketid) {
+    public ResponseEntity<List<HourRecords>> getAllHoursByTicket(@PathVariable("ticketid") final Long ticketid) {
         return new ResponseEntity<>(hourRecordService.getByTicket(ticketid), HttpStatus.OK);
     }
 
     @GetMapping("/getforuser/{userid}")
-    public ResponseEntity<Long> getHoursByUser(@PathVariable("userid") Long userid) {
+    public ResponseEntity<Long> getHoursByUser(@PathVariable("userid") final Long userid) {
         return new ResponseEntity<>(hourRecordService.sumHoursForUser(userid), HttpStatus.OK);
     }
+
     @PostMapping("/loghour")
     public ResponseEntity<HourRecords> addHour(@RequestBody final Map<String, String> body) {
-        return new ResponseEntity<HourRecords>(hourRecordService.createHourRecord(
-                userService.getCurrentUser(),
-                ticketService.findById(Long.parseLong(body.get("ticketId"))),
-                Date.valueOf(body.get("toDate")),
-                Long.parseLong(body.get("hours"))), HttpStatus.CREATED);
+        return new ResponseEntity<HourRecords>(hourRecordService.createHourRecord(userService.getCurrentUser(),
+                                                                                  ticketService.findById(Long.parseLong(
+                                                                                          body.get("ticketId"))),
+                                                                                  Date.valueOf(body.get("toDate")),
+                                                                                  Long.parseLong(body.get("hours"))),
+                                               HttpStatus.CREATED);
     }
 
 }

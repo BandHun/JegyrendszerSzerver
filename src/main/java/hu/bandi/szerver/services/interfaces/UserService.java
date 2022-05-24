@@ -11,6 +11,7 @@ public interface UserService extends UserDetailsService {
     List<User> findAllUser();
 
     List<User> findAllByTeam(Teams teams);
+
     List<User> findAllByCompany(Company company);
 
     User findById(Long id);

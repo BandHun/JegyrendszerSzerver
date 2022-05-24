@@ -19,6 +19,7 @@ public interface TicketService {
     Ticket addToProject(Long id, Project project);
 
     Ticket updateTicket(Ticket ticket);
+
     void addComment(Long ticketId, Comment comment);
 
     void deleteTicket(Long ticketId);

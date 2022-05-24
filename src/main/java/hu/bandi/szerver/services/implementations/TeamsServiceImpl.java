@@ -11,7 +11,6 @@ import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -49,7 +48,7 @@ public class TeamsServiceImpl implements TeamsService {
     @Override
     public Teams addTeam(final String name) {
         final User user = userService.getCurrentUser();
-        Teams newTeam = new Teams(name);
+        final Teams newTeam = new Teams(name);
         teamsRepository.save(newTeam);
         userService.removeTeam(user);
         userService.addTeam(newTeam);

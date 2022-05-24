@@ -18,13 +18,13 @@ public class HourRecordServiceImpl implements HourRecordService {
     HourRecordRepository hourRecordRepository;
 
     @Override
-    public List<HourRecords> getByTicket(Long id) {
+    public List<HourRecords> getByTicket(final Long id) {
         return hourRecordRepository.findByTicketId(id);
     }
 
     @Override
-    public HourRecords createHourRecord(final User user, final Ticket ticket, Date toDate, final long hours) {
-        return hourRecordRepository.save(new HourRecords(user, ticket, toDate,hours));
+    public HourRecords createHourRecord(final User user, final Ticket ticket, final Date toDate, final long hours) {
+        return hourRecordRepository.save(new HourRecords(user, ticket, toDate, hours));
     }
 
     @Override
@@ -44,12 +44,11 @@ public class HourRecordServiceImpl implements HourRecordService {
     }
 
     @Override
-    public long sumHoursForUser(Long userId) {
-        List<HourRecords> hours = hourRecordRepository.findByUser_Id(userId);
+    public long sumHoursForUser(final Long userId) {
+        final List<HourRecords> hours = hourRecordRepository.findByUser_Id(userId);
         long sum = 0;
-        for (HourRecords hour:hours
-             ) {
-            sum+=hour.getRecordedhours();
+        for (final HourRecords hour : hours) {
+            sum += hour.getRecordedhours();
         }
         return sum;
     }

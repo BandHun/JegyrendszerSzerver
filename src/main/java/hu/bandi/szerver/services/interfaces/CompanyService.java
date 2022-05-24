@@ -12,7 +12,7 @@ public interface CompanyService {
     Company addCompany(String name);
 
     List<Company> findAllCompany();
-
+ 
     Company findById(Long id);
 
     void addUser(Long comanyId, User user);

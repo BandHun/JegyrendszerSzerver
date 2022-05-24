@@ -1,6 +1,6 @@
 package hu.bandi.szerver.web.controllers;
+
 import hu.bandi.szerver.models.User;
-import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +19,7 @@ public class LoginController {
 
     @Autowired
     UserService userService;
-    
+
 
     @GetMapping()
     public ResponseEntity<User> login() {

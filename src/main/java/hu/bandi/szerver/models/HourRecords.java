@@ -38,11 +38,11 @@ public class HourRecords implements Serializable {
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
-    public HourRecords(final User user, final Ticket ticket, Date toDate,final long recordedhours) {
+    public HourRecords(final User user, final Ticket ticket, final Date toDate, final long recordedhours) {
         this.user = user;
         this.recordedhours = recordedhours;
         this.ticket = ticket;
-        this.toDate=toDate;
+        this.toDate = toDate;
         isValid = true;
     }
 }

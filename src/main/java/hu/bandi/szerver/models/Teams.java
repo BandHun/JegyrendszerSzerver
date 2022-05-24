@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 
@@ -41,7 +39,7 @@ public class Teams implements Serializable {
     }
 
     @Override
-    public String toString(){
-        return "Teams{id="+id+", name="+name+"}";
+    public String toString() {
+        return "Teams{id=" + id + ", name=" + name + "}";
     }
 }

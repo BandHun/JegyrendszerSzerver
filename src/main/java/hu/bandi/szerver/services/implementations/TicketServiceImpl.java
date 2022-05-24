@@ -29,43 +29,39 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public List<Ticket> findByCompany(Company company) {
-        System.out.println(company.getUsers());
+    public List<Ticket> findByCompany(final Company company) {
         return ticketRepository.findByAuthorIn(company.getUsers());
     }
 
     @Override
-    public Ticket addTicket(String title, int storyPoint, String description) {
-        User currentUser = userService.getCurrentUser();
-        Ticket newTicket = new Ticket(title,description, currentUser , storyPoint, currentUser.getCompany());
+    public Ticket addTicket(final String title, final int storyPoint, final String description) {
+        final User currentUser = userService.getCurrentUser();
+        final Ticket newTicket = new Ticket(title, description, currentUser, storyPoint, currentUser.getCompany());
         return ticketRepository.save(newTicket);
     }
 
     @Override
-    public Ticket assigneToUser(Long id, User user) {
-        Ticket edit = getTicket(id);
+    public Ticket assigneToUser(final Long id, final User user) {
+        final Ticket edit = getTicket(id);
         edit.setAssignee(user);
         return ticketRepository.save(edit);
     }
 
     @Override
-    public Ticket addToProject(Long id, Project project) {
-        Ticket edit = getTicket(id);
+    public Ticket addToProject(final Long id, final Project project) {
+        final Ticket edit = getTicket(id);
         edit.setProject(project);
-        System.out.println("AAAAAAAAAAAAAAA");
-        System.out.println(project);
         return ticketRepository.save(edit);
     }
 
     @Override
     public Ticket updateTicket(final Ticket ticket) {
-        System.out.println(ticket);
         return ticketRepository.save(ticket);
     }
 
     @Override
-    public void addComment(Long ticketId, Comment comment) {
-        Ticket toAddcomment = getTicket(ticketId);
+    public void addComment(final Long ticketId, final Comment comment) {
+        final Ticket toAddcomment = getTicket(ticketId);
         toAddcomment.addComment(comment);
         ticketRepository.save(toAddcomment);
     }

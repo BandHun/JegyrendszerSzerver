@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Immutable;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
@@ -69,14 +68,14 @@ public class Ticket implements Serializable {
     @ManyToOne
     private Sprint sprint;
 
-    public Ticket(final String title, final String description, @NonNull final User author,
-                  final int storyPoints, Company company) {
+    public Ticket(final String title, final String description, @NonNull final User author, final int storyPoints,
+                  final Company company) {
         this.title = title;
         this.description = description;
         this.author = author;
         this.storyPoints = storyPoints;
         this.company = company;
-        project=null;
+        project = null;
         isValid = true;
         createdAt = new java.sql.Date(System.currentTimeMillis());
         comments = new ArrayList<Comment>();

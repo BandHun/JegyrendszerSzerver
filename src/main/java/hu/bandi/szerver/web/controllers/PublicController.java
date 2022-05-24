@@ -21,12 +21,13 @@ public class PublicController {
 
     @PostMapping("/userregistration")
     public ResponseEntity<User> addUser(@RequestBody final Map<String, String> body) {
-        return new ResponseEntity<>(userService.registerUser(body.get("name"),body.get("emailaddress"),body.get("password")), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                userService.registerUser(body.get("name"), body.get("emailaddress"), body.get("password")),
+                HttpStatus.CREATED);
     }
 
     @GetMapping("/ping")
-    public ResponseEntity<String> ping(){
-        System.out.println("AAAAAAAAAAAAa");
+    public ResponseEntity<String> ping() {
         return new ResponseEntity<>("BBBBBBBBBBBBBBBBBBBBBB", HttpStatus.CREATED);
     }
 }

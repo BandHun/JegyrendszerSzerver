@@ -1,7 +1,6 @@
 package hu.bandi.szerver.web.controllers;
 
 
-import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.TeamsService;
@@ -26,13 +25,14 @@ public class UserController {
     CompanyService companyService;
 
     @GetMapping("/allbycompany/{companyId}")
-    public ResponseEntity<List<User>> getAllUser(@PathVariable("companyId") Long comapnyId) {
+    public ResponseEntity<List<User>> getAllUser(@PathVariable("companyId") final Long comapnyId) {
         return new ResponseEntity<>(userService.findAllByCompany(companyService.findById(comapnyId)), HttpStatus.OK);
     }
 
     @GetMapping("/allatmycompany")
     public ResponseEntity<List<User>> getAllUserAtMyCompany() {
-        return new ResponseEntity<>(userService.findAllByCompany(companyService.findById(userService.getCurrentUser().getCompany().getId())), HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAllByCompany(
+                companyService.findById(userService.getCurrentUser().getCompany().getId())), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -42,7 +42,6 @@ public class UserController {
 
     @GetMapping("/getbyteam/{id}")
     public ResponseEntity<List<User>> getUserByTeamId(@PathVariable("id") final Long id) {
-        System.out.println(userService.findAllByTeam(teamsService.findById(id)).size());
         return new ResponseEntity<>(userService.findAllByTeam(teamsService.findById(id)), HttpStatus.OK);
     }
 
@@ -53,18 +52,18 @@ public class UserController {
 
     @PutMapping("/kickfromteam")
     public ResponseEntity<User> kickUserFromTeam(@RequestBody final Long userId) {
-        return new ResponseEntity<>(userService.removeTeam(userService.findById(userId)),HttpStatus.OK);
+        return new ResponseEntity<>(userService.removeTeam(userService.findById(userId)), HttpStatus.OK);
     }
 
     @PutMapping("/addcompany")
     public ResponseEntity<User> addcompany(@RequestBody final Long companyId) {
-        companyService.addUser(companyId,userService.getCurrentUser());
+        companyService.addUser(companyId, userService.getCurrentUser());
         return new ResponseEntity<>(userService.addCompany(companyService.findById(companyId)), HttpStatus.OK);
     }
 
     @PutMapping("/jointeam")
     public ResponseEntity<User> jointeam(@RequestBody final Long teamId) {
-        return new ResponseEntity<User>(userService.addTeam(teamsService.findById(teamId)),HttpStatus.OK);
+        return new ResponseEntity<User>(userService.addTeam(teamsService.findById(teamId)), HttpStatus.OK);
     }
 
 
