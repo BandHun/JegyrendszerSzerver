@@ -28,13 +28,12 @@ public class Document implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
     private boolean isValid;
-
-    @JsonIgnore
-    private String documentLocation;
     private String documentName;
 
-    public Document(final String documentLocation, final String documentName) {
-        this.documentLocation = documentLocation;
+    private byte[] data;
+
+    public Document(final byte[] data, final String documentName) {
+        this.data = data;
         this.documentName = documentName;
         isValid = true;
     }

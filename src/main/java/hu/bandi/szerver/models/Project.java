@@ -35,21 +35,9 @@ public class Project implements Serializable {
     @JoinColumn(name = "company_id")
     private Company company;
 
-    @JsonIgnore
-    @OneToMany
-    private List<Ticket> tickets;
-
     public Project(final String name, final Company company) {
         this.name = name;
         this.company = company;
         isValid = true;
-    }
-
-    public void addTicket(final Ticket ticket) {
-        tickets.add(ticket);
-    }
-
-    public void removeTicket(final Ticket ticket) {
-        tickets.remove(ticket);
     }
 }

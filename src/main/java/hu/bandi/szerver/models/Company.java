@@ -18,6 +18,8 @@ import java.util.List;
  * A cég tárolja a hozzá tartozó felhasználókat, csoportokat, projekteket
  * */
 
+//TODO ÁTGONDOLNI
+
 @Entity
 @Data
 @AllArgsConstructor

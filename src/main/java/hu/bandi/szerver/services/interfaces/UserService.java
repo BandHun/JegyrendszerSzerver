@@ -30,6 +30,8 @@ public interface UserService extends UserDetailsService {
 
     void changePassword(Long userId, String password);
 
-    public User getCurrentUser();
+    User getCurrentUser();
+
+    void removeCompany(User user, Company company);
 
 }

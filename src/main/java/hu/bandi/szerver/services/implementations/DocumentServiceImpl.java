@@ -23,24 +23,9 @@ public class DocumentServiceImpl implements DocumentService {
     DocumentRepository documentRepository;
 
     @Override
-    public Document addDocument(final MultipartFile file) {
-        final String fileLocation = UUID.randomUUID().toString();
-        final Path fileStaticPath = Paths.get(folderLocation, fileLocation);
-        try {
-            Files.write(fileStaticPath, file.getBytes());
-        } catch (final IOException e) {
-            throw new RuntimeException(e.getMessage());
-        }
-
-        return documentRepository.save(new Document(fileLocation, file.getName()));
+    public Document addDocument(final MultipartFile file) throws IOException {
+        return documentRepository.save(new Document(file.getBytes(), file.getName()));
     }
-
-    //TODO: ÁÁt kell gondolni a működését
-    @Override
-    public void addDocuments(final List<Document> documents) {
-        throw new RuntimeException("TO DO");
-    }
-
     @Override
     public void deleteDocument(final Long id) {
         final Document toDelete = documentRepository.findById(id).orElseThrow(

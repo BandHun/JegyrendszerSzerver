@@ -16,6 +16,8 @@ import java.io.Serializable;
  *
  * */
 
+//TODO ÁTGONDOLNI
+
 @Entity
 @Data
 @AllArgsConstructor

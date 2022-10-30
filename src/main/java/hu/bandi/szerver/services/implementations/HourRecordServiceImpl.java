@@ -27,6 +27,7 @@ public class HourRecordServiceImpl implements HourRecordService {
         return hourRecordRepository.save(new HourRecords(user, ticket, toDate, hours));
     }
 
+
     @Override
     public void modifyRecord(final Long recordId, final long newHours) {
         final HourRecords toEdit = hourRecordRepository.findById(recordId).orElseThrow(

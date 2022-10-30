@@ -6,26 +6,22 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Date;
-import java.util.List;
 
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "sprint")
-public class Sprint {
+@Table(name = "joinrequests")
+public class JoinCompanyRequest {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private boolean isValid;
+    @ManyToOne
+    private Company company;
 
-    private Date startDate;
+    @ManyToOne
+    private User user;
 
-    private Date endDate;
-
-    @OneToMany
-    private List<Ticket> tickets;
+    private RequestStatus requestStatus;
 }

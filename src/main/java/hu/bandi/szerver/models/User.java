@@ -40,20 +40,13 @@ public class User implements Serializable {
     @ManyToOne
     private Teams teams;
 
+    private UserLevel userLevel;
+
     public User(final String name, final String emailaddress, final String password, final Company company) {
         this.name = name;
         this.emailaddress = emailaddress;
         this.password = password;
         this.company = company;
+        this.userLevel = UserLevel.UNKNOWN;
     }
-
-    /*@Override
-    public String toString(){
-        return "User{" +
-                "id="+id+
-                ", name='"+name+'\''+
-                ", emailaddress='"+emailaddress+'\''+
-                ", company='"+company+'\''+
-                ", teams='"+teams +'}';
-    }/**/
 }

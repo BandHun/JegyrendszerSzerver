@@ -5,6 +5,7 @@ import hu.bandi.szerver.models.Project;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.CompanyRepository;
+import hu.bandi.szerver.repositories.JoinRequestRepository;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    JoinRequestRepository joinRequestRepository;
 
     @Override
     public Company addCompany(final String name) {
@@ -61,9 +65,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public void deleteCompany(final Long comanyId) {
-        final Company toEdit = getById(comanyId);
-        toEdit.setValid(false);
-        companyRepository.save(toEdit);
+        final Company toDelete = getById(comanyId);
+        toDelete.setValid(false);
+        List<User> users = toDelete.getUsers();
+        for(User user : users)  {
+            userService.removeCompany(user, toDelete);
+        }
+        companyRepository.save(toDelete);
     }
 
     @Override

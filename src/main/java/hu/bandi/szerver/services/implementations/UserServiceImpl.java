@@ -4,6 +4,7 @@ import hu.bandi.szerver.configuration.WebConfig;
 import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.models.UserLevel;
 import hu.bandi.szerver.repositories.UserRepository;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.slf4j.Logger;
@@ -73,6 +74,7 @@ public class UserServiceImpl implements UserService {
     public User addCompany(final Company company) {
         final User current = getCurrentUser();
         current.setCompany(company);
+        current.setUserLevel(UserLevel.ADMIN);
         return userRepository.save(current);
     }
 
@@ -121,4 +123,12 @@ public class UserServiceImpl implements UserService {
     public User getCurrentUser() {
         return userRepository.findByEmailaddress(SecurityContextHolder.getContext().getAuthentication().getName());
     }
+
+    @Override
+    public void removeCompany( User user, final Company company) {
+        user.setCompany(null);
+        userRepository.save(user);
+    }
+
+
 }
