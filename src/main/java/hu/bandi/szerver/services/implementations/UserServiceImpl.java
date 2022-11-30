@@ -55,6 +55,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User findByName(final String name) {
+        return userRepository.findByName(name);
+    }
+
+    @Override
     public User registerUser(final String name, final String emailaddress, final String password) {
         if (userRepository.findByEmailaddress(emailaddress) != null) {
             throw new RuntimeException("Admin exist with this email");
