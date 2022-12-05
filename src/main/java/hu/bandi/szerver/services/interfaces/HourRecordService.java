@@ -19,4 +19,5 @@ public interface HourRecordService {
 
     long sumHoursForUser(Long userId);
 
+    long getUserWorkedHours(Long userid, Date fro);
 }

@@ -52,11 +52,13 @@ public class Ticket implements Serializable {
     private Date createdAt;
 
     private int storyPoints;
-    private int usedStroyPoints;
+    private long usedStroyPoints;
 
     private String description;
 
     private TicketStatus status;
+
+    @JsonIgnore
     @OneToMany
     private List<Document> documents;
     @OneToMany
@@ -65,6 +67,7 @@ public class Ticket implements Serializable {
     @ManyToOne
     private Project project;
 
+    @JsonIgnore
     @ManyToOne
     private Sprint sprint;
 

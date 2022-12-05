@@ -1,5 +1,6 @@
 package hu.bandi.szerver.services.implementations;
 
+import hu.bandi.szerver.models.Sprint;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.TeamsTable;
 import hu.bandi.szerver.models.Ticket;
@@ -14,8 +15,9 @@ public class TeamsTableServiceImpl implements TeamsTableService {
     TeamsTableRepository teamsTableRepository;
 
     @Override
-    public TeamsTable addTable(final String name, final Teams team) {
-        return teamsTableRepository.save(new TeamsTable(name, team));
+    public TeamsTable createTable(final Teams team) {
+        TeamsTable table = new TeamsTable(team.getName()+"s Tables", team);
+        return teamsTableRepository.save(table);
     }
 
     @Override
@@ -37,6 +39,17 @@ public class TeamsTableServiceImpl implements TeamsTableService {
         final TeamsTable toEdit = getTable(teamsTableId);
         toEdit.removeTicket(ticket);
         teamsTableRepository.save(toEdit);
+    }
+
+    @Override
+    public TeamsTable findById(Long id) {
+        return teamsTableRepository.findById(id).orElseThrow(() -> new RuntimeException("Teamtable not found by id:" + id + "."));
+    }
+
+    @Override
+    public void addSprint(Sprint sprint, TeamsTable table) {
+        table.addSprint(sprint);
+        teamsTableRepository.save(table);
     }
 
     private TeamsTable getTable(final Long id) {

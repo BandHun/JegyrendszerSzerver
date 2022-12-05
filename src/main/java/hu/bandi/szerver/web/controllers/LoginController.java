@@ -1,6 +1,8 @@
 package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.services.implementations.CurrentUserService;
+import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.UserService;
 import hu.bandi.szerver.services.jwt.JwtUtil;
 import hu.bandi.szerver.web.requests.LoginRequest;
@@ -32,7 +34,7 @@ public class LoginController {
 
     @GetMapping("/login")
     public ResponseEntity<User> login() {
-        return new ResponseEntity<>(userService.getCurrentUser(), HttpStatus.OK);
+        return new ResponseEntity<>(CurrentUserService.getCurrentUser(), HttpStatus.OK);
     }
 
 
@@ -45,9 +47,10 @@ public class LoginController {
         System.out.println(loginRequest.getPassword());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-        final User user = userService.findByName(loginRequest.getUsername());
+        final User user = userService.findByEmailaddrasse(loginRequest.getUsername());
+        System.out.println(user);
         return ResponseEntity.ok(
-                new JwtResponse(jwtUtil.generateToken(user.getName()),jwtUtil.getExpirationFromNow()));
+                new JwtResponse(jwtUtil.generateToken(user.getEmailaddress()),JwtUtil.getExpirationFromNow()));
 
     }
 

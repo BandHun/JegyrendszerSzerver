@@ -16,7 +16,7 @@ public class JwtUtil {
 
     private final String secret = "ticketsecret";
 
-    private static final long exparationMillies = 1000*60*60;
+    private static final long exparationMillies = 1000*60*60*48; //2 nap
 
     public String extractUsername(final String token) {
         return extractClaim(token, Claims::getSubject);

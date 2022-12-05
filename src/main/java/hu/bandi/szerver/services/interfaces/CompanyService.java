@@ -1,9 +1,6 @@
 package hu.bandi.szerver.services.interfaces;
 
-import hu.bandi.szerver.models.Company;
-import hu.bandi.szerver.models.Project;
-import hu.bandi.szerver.models.Teams;
-import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.models.*;
 
 import java.util.List;
 
@@ -14,8 +11,10 @@ public interface CompanyService {
     List<Company> findAllCompany();
  
     Company findById(Long id);
+     JoinCompanyRequest createJoinRequest(final Long companyId);
 
-    void addUser(Long comanyId, User user);
+
+        void addUser(Long comanyId, User user);
 
     void addTeam(Company company, Teams teams);
 

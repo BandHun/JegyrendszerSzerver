@@ -5,14 +5,23 @@ import hu.bandi.szerver.models.*;
 import java.util.List;
 
 public interface TicketService {
+    void removeTicketsFromSprint(List<Ticket> t);
+
+    void setUsedStroyPoints(Ticket ticket,long hours);
 
     List<Ticket> findAllTickets();
 
     Ticket findById(Long id);
 
+    void addDocument(Document document, Long ticketId);
+
+    void removeUserFromAssignee(User user);
+
+    void deleteDocument(Document document);
+
     List<Ticket> findByCompany(Company company);
 
-    Ticket addTicket(String title, int storyPoint, String description);
+    Ticket addTicket(Ticket ticket);
 
     Ticket assigneToUser(Long id, User user);
 

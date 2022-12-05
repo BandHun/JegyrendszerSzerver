@@ -51,4 +51,12 @@ public class Comment implements Serializable {
         this.creator = creator;
         isValid = true;
     }
+
+    public void addDocument(Document document){
+        this.documents.add(document);
+    }
+
+    public void aremoveDocument(Document document){
+        this.documents.remove(document);
+    }
 }

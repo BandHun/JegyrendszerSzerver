@@ -11,4 +11,5 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
     List<Ticket> findByAuthorIn(List<User> authors);
     List<Ticket> findByCompany(Company company);
+    List<Ticket> findByAssignee(User user);
 }

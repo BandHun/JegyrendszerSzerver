@@ -1,12 +1,10 @@
 package hu.bandi.szerver.services.implementations;
 
-import hu.bandi.szerver.models.Company;
-import hu.bandi.szerver.models.Teams;
-import hu.bandi.szerver.models.TeamsTable;
-import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.models.*;
 import hu.bandi.szerver.repositories.TeamsRepository;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.TeamsService;
+import hu.bandi.szerver.services.interfaces.TeamsTableService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,9 @@ public class TeamsServiceImpl implements TeamsService {
 
     @Autowired
     CompanyService companyService;
+
+    @Autowired
+    TeamsTableService teamsTableService;
 
     @Override
     public List<Teams> findAllTeams() {
@@ -47,7 +48,7 @@ public class TeamsServiceImpl implements TeamsService {
 
     @Override
     public Teams addTeam(final String name) {
-        final User user = userService.getCurrentUser();
+        final User user = CurrentUserService.getCurrentUser();
         final Teams newTeam = new Teams(name);
         teamsRepository.save(newTeam);
         userService.removeTeam(user);
@@ -70,6 +71,24 @@ public class TeamsServiceImpl implements TeamsService {
         toDelete.setTeamsTable(table);
         teamsRepository.save(toDelete);
     }
+
+    @Override
+    public void addSprintTotable(Sprint sprint, Long teamid) {
+        teamsTableService.addSprint(sprint,findTableByTeamId(teamid));
+    }
+
+    @Override
+    public TeamsTable findTableByTeamId(Long teamid){
+        return teamsRepository.findByTeamsTable(teamsTableService.findById(teamid)).getTeamsTable();
+    }
+
+    @Override
+    public Teams findTeamByTableId(long tableId){
+        TeamsTable t = teamsTableService.findById(tableId);
+        return teamsRepository.findByTeamsTable(t);
+    }
+
+
 
     private Teams getTeams(final Long id) {
         return teamsRepository.findById(id).orElseThrow(() -> new RuntimeException("Team not found by id:" + id + "."));

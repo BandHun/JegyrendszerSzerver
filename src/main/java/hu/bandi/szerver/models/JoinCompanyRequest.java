@@ -14,6 +14,7 @@ import javax.persistence.*;
 @Table(name = "joinrequests")
 public class JoinCompanyRequest {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -24,4 +25,10 @@ public class JoinCompanyRequest {
     private User user;
 
     private RequestStatus requestStatus;
+
+    public JoinCompanyRequest(Company company,User user){
+        this.company=company;
+        this.user=user;
+        this.requestStatus=RequestStatus.UNDER_REVIEW;
+    }
 }

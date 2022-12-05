@@ -14,9 +14,11 @@ public interface UserService extends UserDetailsService {
 
     List<User> findAllByCompany(Company company);
 
+    User leaveCompany(Long userId);
+
     User findById(Long id);
 
-    User findByName(String name);
+    User findByEmailaddrasse(String name);
 
     User registerUser(String name, String emailaddress, String password);
 
@@ -31,8 +33,6 @@ public interface UserService extends UserDetailsService {
     void deleteUser(Long userId);
 
     void changePassword(Long userId, String password);
-
-    User getCurrentUser();
 
     void removeCompany(User user, Company company);
 

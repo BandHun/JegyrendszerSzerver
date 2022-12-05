@@ -1,5 +1,6 @@
 package hu.bandi.szerver.services.interfaces;
 
+import hu.bandi.szerver.models.Sprint;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.TeamsTable;
 
@@ -20,4 +21,8 @@ public interface TeamsService {
     void deleteTeams(Long teamsId);
 
     void setTable(Long teamsId, TeamsTable table);
+
+    void addSprintTotable(Sprint sprint, Long teamid);
+    Teams findTeamByTableId(long tableId);
+    TeamsTable findTableByTeamId(Long teamid);
 }

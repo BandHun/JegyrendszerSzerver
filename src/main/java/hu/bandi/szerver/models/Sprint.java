@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ public class Sprint {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private boolean isValid;
+    private boolean valid;
 
     private Date startDate;
 
@@ -28,4 +29,11 @@ public class Sprint {
 
     @OneToMany
     private List<Ticket> tickets;
+
+    public Sprint(Date startDate,Date endDate){
+        this.endDate=endDate;
+        this.startDate=startDate;
+        this.valid = true;
+        this.tickets=new ArrayList<>();
+    }
 }

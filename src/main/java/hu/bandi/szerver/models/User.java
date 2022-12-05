@@ -49,4 +49,11 @@ public class User implements Serializable {
         this.company = company;
         this.userLevel = UserLevel.UNKNOWN;
     }
+
+    public User update(User toUpdate){
+        this.name =toUpdate.getName();
+        this.emailaddress = toUpdate.getEmailaddress();
+        this.teams=toUpdate.getTeams();
+        return this;
+    }
 }

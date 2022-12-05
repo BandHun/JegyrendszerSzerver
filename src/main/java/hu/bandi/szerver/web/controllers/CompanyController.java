@@ -1,7 +1,12 @@
 package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.Company;
+import hu.bandi.szerver.models.JoinCompanyRequest;
+import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.services.implementations.CurrentUserService;
+import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CompanyService;
+import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,13 +15,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/company")
+@RequestMapping("/api/company")
 public class CompanyController {
     @Autowired
     private final CompanyService companyService;
 
-    public CompanyController(final CompanyService companyService) {
+    private UserService userService;
+
+    public CompanyController(final CompanyService companyService, UserService userService) {
         this.companyService = companyService;
+        this.userService = userService;
     }
 
     @GetMapping("/all")
@@ -32,6 +40,20 @@ public class CompanyController {
     @PostMapping("/add")
     public ResponseEntity<Company> addCompany(@RequestBody final String name) {
         return new ResponseEntity<>(companyService.addCompany(name), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/join/{id}")
+    public ResponseEntity<?> addCompany(@PathVariable("id") final Long companyId) {
+        User toadd = CurrentUserService.getCurrentUser();
+        Company company = companyService.findById(companyId);
+        userService.addCompany(company);
+        companyService.addUser(companyId,toadd);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PostMapping("/joinrequest/create")
+    public ResponseEntity<JoinCompanyRequest> addcompany(@RequestBody final Long companyId) {
+        return new ResponseEntity<>(companyService.createJoinRequest(companyId), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

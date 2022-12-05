@@ -1,5 +1,6 @@
 package hu.bandi.szerver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,11 +39,16 @@ public class HourRecords implements Serializable {
     @JoinColumn(name = "ticket_id")
     private Ticket ticket;
 
+    @ManyToOne
+    @JsonIgnore
+    private Company company;
+
     public HourRecords(final User user, final Ticket ticket, final Date toDate, final long recordedhours) {
         this.user = user;
         this.recordedhours = recordedhours;
         this.ticket = ticket;
         this.toDate = toDate;
         isValid = true;
+        this.company=user.getCompany();
     }
 }

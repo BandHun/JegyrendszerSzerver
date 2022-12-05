@@ -2,18 +2,21 @@ package hu.bandi.szerver.web.controllers;
 
 
 import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.services.implementations.CurrentUserService;
+import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.TeamsService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     UserService userService;
@@ -29,10 +32,15 @@ public class UserController {
         return new ResponseEntity<>(userService.findAllByCompany(companyService.findById(comapnyId)), HttpStatus.OK);
     }
 
+    @GetMapping("/currentuser")
+    public ResponseEntity<User> getCurrentUser() {
+        return new ResponseEntity<>(userService.findByEmailaddrasse(SecurityContextHolder.getContext().getAuthentication().getName()), HttpStatus.OK);
+    }
+
     @GetMapping("/allatmycompany")
     public ResponseEntity<List<User>> getAllUserAtMyCompany() {
         return new ResponseEntity<>(userService.findAllByCompany(
-                companyService.findById(userService.getCurrentUser().getCompany().getId())), HttpStatus.OK);
+                companyService.findById(CurrentUserService.getCurrentUser().getCompany().getId())), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -55,11 +63,11 @@ public class UserController {
         return new ResponseEntity<>(userService.removeTeam(userService.findById(userId)), HttpStatus.OK);
     }
 
-    @PutMapping("/addcompany")
-    public ResponseEntity<User> addcompany(@RequestBody final Long companyId) {
-        companyService.addUser(companyId, userService.getCurrentUser());
-        return new ResponseEntity<>(userService.addCompany(companyService.findById(companyId)), HttpStatus.OK);
+    @PostMapping("/leavecompany")
+    public ResponseEntity<User> leaveCompany(@RequestBody final Long userId) {
+        return new ResponseEntity<>(userService.removeTeam(userService.findById(userId)), HttpStatus.OK);
     }
+
 
     @PutMapping("/jointeam")
     public ResponseEntity<User> jointeam(@RequestBody final Long teamId) {

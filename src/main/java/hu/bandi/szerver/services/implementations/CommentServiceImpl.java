@@ -1,6 +1,7 @@
 package hu.bandi.szerver.services.implementations;
 
 import hu.bandi.szerver.models.Comment;
+import hu.bandi.szerver.models.Document;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.CommentRepository;
 import hu.bandi.szerver.services.interfaces.CommentService;
@@ -58,5 +59,21 @@ public class CommentServiceImpl implements CommentService {
     public Comment findById(final Long id) {
         return commentRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Comment not found by id:" + id + "."));
+    }
+
+    @Override
+    public void addDocument(Document document, Long commentId) {
+Comment toEdit = findById(commentId);
+toEdit.addDocument(document);
+commentRepository.save(toEdit);
+    }
+
+    @Override
+    public void removeDocument(Document document) {
+        List<Comment> all = commentRepository.findAll();
+        for(Comment c:all){
+            c.aremoveDocument(document);
+            commentRepository.save(c);
+        }
     }
 }

@@ -1,6 +1,8 @@
 package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.Comment;
+import hu.bandi.szerver.services.implementations.CurrentUserService;
+import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CommentService;
 import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
@@ -10,13 +12,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/comment")
+@RequestMapping("/api/comment")
 public class CommentController {
     @Autowired
     private final CommentService commentService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     TicketService ticketService;
@@ -34,7 +33,7 @@ public class CommentController {
     @PostMapping("/add/{ticketid}")
     public ResponseEntity<Comment> addComment(@PathVariable("ticketid") final Long ticketid,
                                               @RequestBody final String name) {
-        Comment newComment = commentService.addComment(name, userService.getCurrentUser());
+        Comment newComment = commentService.addComment(name, CurrentUserService.getCurrentUser());
         ticketService.addComment(ticketid, newComment);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }

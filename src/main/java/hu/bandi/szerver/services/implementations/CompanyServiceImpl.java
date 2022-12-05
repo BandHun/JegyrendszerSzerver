@@ -1,9 +1,6 @@
 package hu.bandi.szerver.services.implementations;
 
-import hu.bandi.szerver.models.Company;
-import hu.bandi.szerver.models.Project;
-import hu.bandi.szerver.models.Teams;
-import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.models.*;
 import hu.bandi.szerver.repositories.CompanyRepository;
 import hu.bandi.szerver.repositories.JoinRequestRepository;
 import hu.bandi.szerver.services.interfaces.CompanyService;
@@ -30,6 +27,13 @@ public class CompanyServiceImpl implements CompanyService {
         final Company newCompany = companyRepository.save(new Company(name));
         userService.addCompany(newCompany);
         return newCompany;
+    }
+
+    @Override
+    public JoinCompanyRequest createJoinRequest(final Long companyId){
+        Company toJoin = findById(companyId);
+        JoinCompanyRequest request = new JoinCompanyRequest(toJoin, CurrentUserService.getCurrentUser());
+        return joinRequestRepository.save(request);
     }
 
     @Override

@@ -24,14 +24,20 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document addDocument(final MultipartFile file) throws IOException {
+        System.out.println(file.getBytes().length);
         return documentRepository.save(new Document(file.getBytes(), file.getName()));
     }
     @Override
     public void deleteDocument(final Long id) {
-        final Document toDelete = documentRepository.findById(id).orElseThrow(
-                () -> new RuntimeException("Comment not found by id:" + id + "."));
+        final Document toDelete = getById(id);
         toDelete.setValid(false);
         documentRepository.save(toDelete);
+    }
+
+    @Override
+    public Document getById(Long id) {
+        return documentRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Comment not found by id:" + id + "."));
     }
 
     @Override

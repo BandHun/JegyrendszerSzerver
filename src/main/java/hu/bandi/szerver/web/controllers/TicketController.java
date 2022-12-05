@@ -1,8 +1,11 @@
 package hu.bandi.szerver.web.controllers;
 
+import hu.bandi.szerver.models.Sprint;
 import hu.bandi.szerver.models.Ticket;
 import hu.bandi.szerver.models.TicketStatus;
 import hu.bandi.szerver.repositories.TicketRepository;
+import hu.bandi.szerver.services.implementations.CurrentUserService;
+import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.ProjectService;
 import hu.bandi.szerver.services.interfaces.TicketService;
@@ -16,7 +19,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/ticket")
+@RequestMapping("/api/ticket")
 public class TicketController {
 
     @Autowired
@@ -45,7 +48,7 @@ public class TicketController {
 
     @GetMapping("/allbycompany")
     public ResponseEntity<List<Ticket>> getAllByCompanyTicket() {
-        return new ResponseEntity<>(ticketRepository.findByCompany(userService.getCurrentUser().getCompany()),
+        return new ResponseEntity<>(ticketRepository.findByCompany(CurrentUserService.getCurrentUser().getCompany()),
                                     HttpStatus.OK);
     }
 
@@ -56,14 +59,26 @@ public class TicketController {
 
     @GetMapping("/alltouser")
     public ResponseEntity<List<Ticket>> getTicketByCompany() {
-        return new ResponseEntity<>(ticketRepository.findByCompany(userService.getCurrentUser().getCompany()),
+        return new ResponseEntity<>(ticketRepository.findByCompany(CurrentUserService.getCurrentUser().getCompany()),
                                     HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Ticket> addTicket(@RequestBody final Map<String, String> body) {
-        return new ResponseEntity<>(ticketService.addTicket(body.get("title"), Integer.parseInt(body.get("storypoint")),
-                                                            body.get("description")), HttpStatus.CREATED);
+    public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket) {
+        System.out.println(ticket.getSprint());
+        System.out.println(ticket.getProject());
+        return new ResponseEntity<>(ticketService.addTicket(ticket), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/tosprint/{id}")
+    public ResponseEntity<?> tosprint(@PathVariable("id") Long id,@RequestBody Sprint sprint){
+        Ticket t = ticketService.findById(id);
+        if(sprint == null){
+            throw new RuntimeException("Wrong sprint");
+        }
+        t.setSprint(sprint);
+        ticketService.updateTicket(t);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/update")

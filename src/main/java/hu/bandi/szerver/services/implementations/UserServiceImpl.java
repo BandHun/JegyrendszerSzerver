@@ -6,6 +6,7 @@ import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.models.UserLevel;
 import hu.bandi.szerver.repositories.UserRepository;
+import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,12 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    static UserRepository staticUserRepository;
+
+    @Autowired
+    TicketService ticketService;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -50,13 +57,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User leaveCompany(Long userId) {
+        User toEdit = findById(userId);
+        ticketService.removeUserFromAssignee(toEdit);
+        toEdit.setCompany(null);
+        return userRepository.save(toEdit);
+
+    }
+
+    @Override
     public User findById(final Long id) {
         return getUser(id);
     }
 
     @Override
-    public User findByName(final String name) {
-        return userRepository.findByName(name);
+    public User findByEmailaddrasse(final String name) {
+        return userRepository.findByEmailaddress(name);
     }
 
     @Override
@@ -72,12 +88,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(final User user) {
-        return userRepository.save(user);
+        User updatedUser = getUser(user.getId()).update(user);
+        return userRepository.save(updatedUser);
     }
 
     @Override
     public User addCompany(final Company company) {
-        final User current = getCurrentUser();
+        final User current = CurrentUserService.getCurrentUser();
         current.setCompany(company);
         current.setUserLevel(UserLevel.ADMIN);
         return userRepository.save(current);
@@ -85,7 +102,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User addTeam(final Teams team) {
-        final User current = getCurrentUser();
+        final User current = CurrentUserService.getCurrentUser();
         current.setTeams(team);
         return userRepository.save(current);
     }
@@ -115,18 +132,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(final String emailaddress) throws UsernameNotFoundException {
-        final User admin = userRepository.findByEmailaddress(emailaddress);
-        if (admin == null) {
+        final User user = userRepository.findByEmailaddress(emailaddress);
+        if (user == null) {
             throw new UsernameNotFoundException("Invalid user name or password.");
         }
         final ArrayList<SimpleGrantedAuthority> roles = new ArrayList<SimpleGrantedAuthority>();
-        return new org.springframework.security.core.userdetails.User(admin.getEmailaddress(), admin.getPassword(),
+        return new org.springframework.security.core.userdetails.User(user.getEmailaddress(), user.getPassword(),
                                                                       roles);
-    }
-
-    @Override
-    public User getCurrentUser() {
-        return userRepository.findByEmailaddress(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 
     @Override

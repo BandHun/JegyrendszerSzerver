@@ -5,6 +5,7 @@ import hu.bandi.szerver.models.Ticket;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.HourRecordRepository;
 import hu.bandi.szerver.services.interfaces.HourRecordService;
+import hu.bandi.szerver.services.interfaces.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,13 +18,22 @@ public class HourRecordServiceImpl implements HourRecordService {
     @Autowired
     HourRecordRepository hourRecordRepository;
 
+    @Autowired
+    TicketService ticketService;
+
     @Override
     public List<HourRecords> getByTicket(final Long id) {
         return hourRecordRepository.findByTicketId(id);
     }
 
     @Override
-    public HourRecords createHourRecord(final User user, final Ticket ticket, final Date toDate, final long hours) {
+    public HourRecords createHourRecord(final User user, final Ticket ticket, final Date toDate, long hours) {
+        List<HourRecords> records = getByTicket(ticket.getId());
+        for(HourRecords h:records){
+            hours+=h.getRecordedhours();
+        }
+        ticketService.setUsedStroyPoints(ticket,hours);
+
         return hourRecordRepository.save(new HourRecords(user, ticket, toDate, hours));
     }
 
@@ -52,5 +62,17 @@ public class HourRecordServiceImpl implements HourRecordService {
             sum += hour.getRecordedhours();
         }
         return sum;
+    }
+
+    @Override
+    public long getUserWorkedHours(Long userid, Date fro){
+        List<HourRecords> rec = hourRecordRepository.findByUser_Id(userid);
+        long ret = 0;
+        for(HourRecords h:rec){
+            if (h.getToDate().after(fro)){
+                ret+=h.getRecordedhours();
+            }
+        }
+        return ret;
     }
 }

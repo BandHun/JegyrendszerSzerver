@@ -36,7 +36,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public Project newProject(final String name) {
-        return projectRepository.save(new Project(name, userService.getCurrentUser().getCompany()));
+        return projectRepository.save(new Project(name, CurrentUserService.getCurrentUser().getCompany()));
     }
 
     @Override
@@ -48,16 +48,12 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public void addTicket(final Long projectId, final Ticket ticket) {
-        final Project toEdit = getProject(projectId);
-        toEdit.addTicket(ticket);
-        projectRepository.save(toEdit);
+        throw new RuntimeException("TODO");
     }
 
     @Override
     public void removeTicket(final Long projectId, final Ticket ticket) {
-        final Project toEdit = getProject(projectId);
-        toEdit.removeTicket(ticket);
-        projectRepository.save(toEdit);
+        throw new RuntimeException("TODO");
     }
 
     @Override

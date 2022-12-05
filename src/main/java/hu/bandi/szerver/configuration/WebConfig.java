@@ -52,7 +52,7 @@ public class WebConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         //@formatter:off
         http.cors().and().csrf().disable();
-        http.authorizeRequests().antMatchers("/api/public/**").permitAll().anyRequest().authenticated().and().httpBasic();
+        http.authorizeRequests().antMatchers("/api/public/**").permitAll().anyRequest().authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         //@formatter:on
     }

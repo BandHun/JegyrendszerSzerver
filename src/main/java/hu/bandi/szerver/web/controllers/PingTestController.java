@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/api/test")
 public class PingTestController {
     @GetMapping("/ping")
     public ResponseEntity<String> getCommentById(@PathVariable("id") final Long id) {

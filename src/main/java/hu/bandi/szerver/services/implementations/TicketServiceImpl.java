@@ -14,9 +14,21 @@ public class TicketServiceImpl implements TicketService {
     @Autowired
     TicketRepository ticketRepository;
 
-    @Autowired
-    UserService userService;
 
+    @Override
+    public void removeTicketsFromSprint(List<Ticket> t) {
+for(Ticket tic:t){
+    tic.setSprint(null);
+    ticketRepository.save(tic);
+}
+    }
+
+    @Override
+    public void setUsedStroyPoints(Ticket ticket, long hours) {
+        Ticket t = getTicket(ticket.getId());
+        t.setUsedStroyPoints(hours);
+        ticketRepository.save(t);
+    }
 
     @Override
     public List<Ticket> findAllTickets() {
@@ -29,15 +41,41 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public void addDocument(Document document, Long ticketId) {
+        Ticket toEdit= findById(ticketId);
+        toEdit.addDocument(document);
+        ticketRepository.save(toEdit);
+    }
+
+    @Override
+    public void removeUserFromAssignee(User user) {
+        for(Ticket ticket :ticketRepository.findByAssignee(user)){
+            ticket.setAssignee(null);
+            ticketRepository.save(ticket);
+        }
+    }
+
+    @Override
+    public void deleteDocument(Document document) {
+        List<Ticket> all = ticketRepository.findAll();
+        for(Ticket a:all){
+            a.removeDocument(document);
+        }
+    }
+
+    @Override
     public List<Ticket> findByCompany(final Company company) {
         return ticketRepository.findByAuthorIn(company.getUsers());
     }
 
     @Override
-    public Ticket addTicket(final String title, final int storyPoint, final String description) {
-        final User currentUser = userService.getCurrentUser();
-        final Ticket newTicket = new Ticket(title, description, currentUser, storyPoint, currentUser.getCompany());
-        return ticketRepository.save(newTicket);
+    public Ticket addTicket(Ticket ticket) {
+        final User currentUser = CurrentUserService.getCurrentUser();
+        ticket.setAuthor(currentUser);
+        ticket.setCompany(currentUser.getCompany());
+        ticket.setStatus(TicketStatus.TODO);
+        ticket.setCreatedAt(new java.sql.Date(System.currentTimeMillis()));
+        return ticketRepository.save(ticket);
     }
 
     @Override
@@ -56,7 +94,15 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public Ticket updateTicket(final Ticket ticket) {
-        return ticketRepository.save(ticket);
+        Ticket toUpdate = findById(ticket.getId());
+        if(ticket.getStatus() == toUpdate.getStatus()){
+            return ticketRepository.save(ticket);
+        }
+        else {
+            changeTicketStatus(ticket.getId(), ticket.getStatus());
+            return ticketRepository.save(ticket);
+        }
+
     }
 
     @Override
