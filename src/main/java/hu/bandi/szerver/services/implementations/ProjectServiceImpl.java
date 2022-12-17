@@ -21,7 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> findAllProject() {
-        return projectRepository.findAll();
+        return projectRepository.findAllByCompany(CurrentUserService.getCurrentUser().getCompany());
     }
 
     @Override

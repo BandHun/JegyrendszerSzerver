@@ -27,6 +27,7 @@ public class User implements Serializable {
     @Column(name = "id", nullable = false)
     private Long id;
 
+    private boolean isAdmin;
     private String name;
     private String emailaddress;
 
@@ -38,12 +39,14 @@ public class User implements Serializable {
     private Company company;
 
     @ManyToOne
+    @JsonIgnore
     private Teams teams;
 
     private UserLevel userLevel;
 
     public User(final String name, final String emailaddress, final String password, final Company company) {
         this.name = name;
+        this.isAdmin=false;
         this.emailaddress = emailaddress;
         this.password = password;
         this.company = company;

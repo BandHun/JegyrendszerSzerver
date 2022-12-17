@@ -9,8 +9,12 @@ public interface CompanyService {
     Company addCompany(String name);
 
     List<Company> findAllCompany();
- 
-    Company findById(Long id);
+
+    List<JoinCompanyRequest> getJoinRequests();
+     List<JoinCompanyRequest> getJoinRequestsByCompany();
+
+
+        Company findById(Long id);
      JoinCompanyRequest createJoinRequest(final Long companyId);
 
 
@@ -27,4 +31,8 @@ public interface CompanyService {
     void deleteTeams(Long comanyId, Teams teams);
 
     void deleteProject(Long comanyId, Project project);
+
+    void acceptJoinRequest(JoinCompanyRequest request);
+
+    void declineJoinRequest(JoinCompanyRequest request);
 }

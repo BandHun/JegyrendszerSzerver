@@ -55,8 +55,8 @@ public class HourRecordServiceImpl implements HourRecordService {
     }
 
     @Override
-    public long sumHoursForUser(final Long userId) {
-        final List<HourRecords> hours = hourRecordRepository.findByUser_Id(userId);
+    public long sumHoursForUser(final Long userId, Date toDate) {
+        final List<HourRecords> hours = hourRecordRepository.findByUserAndToDate(CurrentUserService.getCurrentUser(),toDate);
         long sum = 0;
         for (final HourRecords hour : hours) {
             sum += hour.getRecordedhours();
@@ -66,7 +66,7 @@ public class HourRecordServiceImpl implements HourRecordService {
 
     @Override
     public long getUserWorkedHours(Long userid, Date fro){
-        List<HourRecords> rec = hourRecordRepository.findByUser_Id(userid);
+        final List<HourRecords> rec = hourRecordRepository.findByUserAndToDate(CurrentUserService.getCurrentUser(),fro);
         long ret = 0;
         for(HourRecords h:rec){
             if (h.getToDate().after(fro)){
@@ -74,5 +74,15 @@ public class HourRecordServiceImpl implements HourRecordService {
             }
         }
         return ret;
+    }
+
+    @Override
+    public Long getTicketUsetStorypoints(long ticketId) {
+        final List<HourRecords> hours = hourRecordRepository.findByTicketId(ticketId);
+        long sum = 0;
+        for (final HourRecords hour : hours) {
+            sum += hour.getRecordedhours();
+        }
+        return sum;
     }
 }

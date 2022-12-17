@@ -32,11 +32,18 @@ public class CommentController {
 
     @PostMapping("/add/{ticketid}")
     public ResponseEntity<Comment> addComment(@PathVariable("ticketid") final Long ticketid,
-                                              @RequestBody final String name) {
-        Comment newComment = commentService.addComment(name, CurrentUserService.getCurrentUser());
+                                              @RequestBody Comment comment) {
+        Comment newComment = commentService.addComment(comment);
         ticketService.addComment(ticketid, newComment);
         return new ResponseEntity<>(newComment, HttpStatus.CREATED);
     }
+
+    @PutMapping("/update")
+    public ResponseEntity<Comment> updateComment(
+                                              @RequestBody Comment comment) {
+        return new ResponseEntity<>(commentService.modifyComment(comment.getId(),comment.getCommentMessage()), HttpStatus.CREATED);
+    }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> deleteComment(@PathVariable("id") final Long id) {

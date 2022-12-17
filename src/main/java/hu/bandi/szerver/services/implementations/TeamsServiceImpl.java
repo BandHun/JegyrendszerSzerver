@@ -49,7 +49,7 @@ public class TeamsServiceImpl implements TeamsService {
     @Override
     public Teams addTeam(final String name) {
         final User user = CurrentUserService.getCurrentUser();
-        final Teams newTeam = new Teams(name);
+        final Teams newTeam = new Teams(name,user.getCompany());
         teamsRepository.save(newTeam);
         userService.removeTeam(user);
         userService.addTeam(newTeam);

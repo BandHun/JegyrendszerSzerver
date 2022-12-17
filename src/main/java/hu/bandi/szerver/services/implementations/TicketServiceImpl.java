@@ -2,8 +2,8 @@ package hu.bandi.szerver.services.implementations;
 
 import hu.bandi.szerver.models.*;
 import hu.bandi.szerver.repositories.TicketRepository;
+import hu.bandi.szerver.services.interfaces.SprintService;
 import hu.bandi.szerver.services.interfaces.TicketService;
-import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +13,9 @@ import java.util.List;
 public class TicketServiceImpl implements TicketService {
     @Autowired
     TicketRepository ticketRepository;
+
+    @Autowired
+    SprintService sprintService;
 
 
     @Override
@@ -43,13 +46,18 @@ for(Ticket tic:t){
     @Override
     public void addDocument(Document document, Long ticketId) {
         Ticket toEdit= findById(ticketId);
-        toEdit.addDocument(document);
+        System.out.println(toEdit.getDocuments().size());
+        System.out.println(document.getId());
+        List<Document> d = toEdit.getDocuments();
+        d.add(document);
+        toEdit.setDocuments(d);
+        System.out.println(toEdit.getDocuments().size());
         ticketRepository.save(toEdit);
     }
 
     @Override
     public void removeUserFromAssignee(User user) {
-        for(Ticket ticket :ticketRepository.findByAssignee(user)){
+        for(Ticket ticket :ticketRepository.findByAssigneeAndValid(user, true)){
             ticket.setAssignee(null);
             ticketRepository.save(ticket);
         }
@@ -65,7 +73,7 @@ for(Ticket tic:t){
 
     @Override
     public List<Ticket> findByCompany(final Company company) {
-        return ticketRepository.findByAuthorIn(company.getUsers());
+        return ticketRepository.findByAuthorInAndValid(company.getUsers(), true);
     }
 
     @Override
@@ -74,6 +82,7 @@ for(Ticket tic:t){
         ticket.setAuthor(currentUser);
         ticket.setCompany(currentUser.getCompany());
         ticket.setStatus(TicketStatus.TODO);
+        ticket.setValid(true);
         ticket.setCreatedAt(new java.sql.Date(System.currentTimeMillis()));
         return ticketRepository.save(ticket);
     }
@@ -95,6 +104,21 @@ for(Ticket tic:t){
     @Override
     public Ticket updateTicket(final Ticket ticket) {
         Ticket toUpdate = findById(ticket.getId());
+        System.out.println("TICKET UPDATE");
+        System.out.println(ticket.getSprint());
+        System.out.println(ticket.getTeams());
+        System.out.println(ticket.getAssignee());
+        ticket.setDocuments(toUpdate.getDocuments());
+        if(toUpdate.getSprint() != null){
+            sprintService.aremoveTicketToSprint(ticket.getSprint(),toUpdate);
+        }
+        if(ticket.getSprint()!=null){
+            try{
+            sprintService.addTicketToSprint(ticket.getSprint(),toUpdate);
+        }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+        }
         if(ticket.getStatus() == toUpdate.getStatus()){
             return ticketRepository.save(ticket);
         }
@@ -123,10 +147,18 @@ for(Ticket tic:t){
     public void changeTicketStatus(final Long ticketId, final TicketStatus toStatus) {
         final Ticket toEdit = getTicket(ticketId);
         if (!TicketStatus.isValidChange(toEdit.getStatus(), toStatus)) {
+            System.out.println("BAD STATUS CHANGE");
             throw new RuntimeException(
                     "Invalid status change from " + toEdit.getStatus() + " to " + toStatus.name() + ".");
         }
         toEdit.setStatus(toStatus);
+        ticketRepository.save(toEdit);
+    }
+
+    @Override
+    public void addTeam(Long ticketId, Teams teams) {
+        Ticket toEdit = findById(ticketId);
+        toEdit.setTeams(teams);
         ticketRepository.save(toEdit);
     }
 

@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface DocumentService {
 
-    Document addDocument(final MultipartFile file) throws IOException;
+    Document addDocument(final MultipartFile file, final String filename) throws IOException;
 
     void deleteDocument(Long id);
 

@@ -1,7 +1,9 @@
 package hu.bandi.szerver.web.controllers;
 
 
+import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.models.UserLevel;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
 import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CompanyService;
@@ -43,6 +45,11 @@ public class UserController {
                 companyService.findById(CurrentUserService.getCurrentUser().getCompany().getId())), HttpStatus.OK);
     }
 
+    @GetMapping("/allatmycompany2")
+    public ResponseEntity<List<User>> getAllUserAtMyCompany2() {
+        return new ResponseEntity<>(userService.findAllByCompany(
+                companyService.findById(CurrentUserService.getCurrentUser().getCompany().getId())), HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") final Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
@@ -53,9 +60,35 @@ public class UserController {
         return new ResponseEntity<>(userService.findAllByTeam(teamsService.findById(id)), HttpStatus.OK);
     }
 
+
+    @GetMapping("/getteamem/{id}")
+    public ResponseEntity<Teams> getteamem(@PathVariable("id") final Long id) {
+        return new ResponseEntity<Teams>(userService.findById(id).getTeams(), HttpStatus.OK);
+    }
+
+    @PutMapping("/setlevel/{id}")
+    public ResponseEntity<User> setlevel(@PathVariable("id") final Long userId, @RequestBody UserLevel level){
+        return new ResponseEntity<>(userService.setLevel(userId,level), HttpStatus.OK);
+    }
+
     @PutMapping("/update")
     public ResponseEntity<User> updateUser(@RequestBody final User user) {
         return new ResponseEntity<>(userService.updateUser(user), HttpStatus.OK);
+    }
+
+    @PutMapping("/addtoteambyid/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody final User user) {
+        return new ResponseEntity<>(userService.addTeam(user.getId(),teamsService.findById(id)), HttpStatus.OK);
+    }
+
+    @PostMapping("/setadmin/{id}")
+    public ResponseEntity<User> setAdmin(@PathVariable("id") long id) {
+        if(CurrentUserService.getCurrentUser().getUserLevel() ==UserLevel.ADMIN){
+            return new ResponseEntity<>(userService.setAdmin(id), HttpStatus.OK);
+        }else {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
     }
 
     @PutMapping("/kickfromteam")

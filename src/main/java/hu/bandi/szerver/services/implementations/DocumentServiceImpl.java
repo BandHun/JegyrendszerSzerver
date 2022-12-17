@@ -23,9 +23,10 @@ public class DocumentServiceImpl implements DocumentService {
     DocumentRepository documentRepository;
 
     @Override
-    public Document addDocument(final MultipartFile file) throws IOException {
+    public Document addDocument(final MultipartFile file, final String filename) throws IOException {
         System.out.println(file.getBytes().length);
-        return documentRepository.save(new Document(file.getBytes(), file.getName()));
+        System.out.println(file.getName());
+        return documentRepository.save(new Document(file.getBytes(), filename));
     }
     @Override
     public void deleteDocument(final Long id) {

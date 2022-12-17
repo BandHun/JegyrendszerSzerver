@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
 
-    List<Ticket> findByAuthorIn(List<User> authors);
-    List<Ticket> findByCompany(Company company);
-    List<Ticket> findByAssignee(User user);
+    List<Ticket> findByAuthorInAndValid(List<User> authors, Boolean valid);
+    List<Ticket> findByCompanyAndValid(Company company, Boolean valid);
+    List<Ticket> findByAssigneeAndValid(User user, Boolean valid);
 }

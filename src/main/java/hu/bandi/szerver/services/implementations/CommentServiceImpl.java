@@ -9,6 +9,7 @@ import hu.bandi.szerver.services.interfaces.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,16 +24,17 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Comment addComment(final String message, final User user) {
-        return commentRepository.save(new Comment(message, user));
+    public Comment addComment(Comment comment) {
+        comment.setCreator(CurrentUserService.getCurrentUser());
+        return commentRepository.save(comment);
     }
 
     @Override
-    public void modifyComment(final Long id, final String message) {
+    public Comment modifyComment(final Long id, final String message) {
         final Comment toEdit = commentRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Comment not found by id:" + id + "."));
         toEdit.setCommentMessage(message);
-        commentRepository.save(toEdit);
+        return commentRepository.save(toEdit);
     }
 
     @Override

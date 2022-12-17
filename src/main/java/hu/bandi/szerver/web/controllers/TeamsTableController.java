@@ -53,6 +53,7 @@ import java.util.stream.Collectors;
 
     @PostMapping("/createtoteam")
     public ResponseEntity<TeamsTable> addTeams(@RequestBody final Long id) {
+            System.out.println("AAAA");
             TeamsTable created = tableService.createTable(teamsService.findById(id));
             teamsService.setTable(id,created);
         return new ResponseEntity<>(created, HttpStatus.CREATED);

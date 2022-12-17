@@ -17,7 +17,9 @@ public interface HourRecordService {
 
     void delteRecord(Long recordId);
 
-    long sumHoursForUser(Long userId);
+    long sumHoursForUser(Long userId, Date toDate);
 
     long getUserWorkedHours(Long userid, Date fro);
+
+    Long getTicketUsetStorypoints(long ticketId);
 }

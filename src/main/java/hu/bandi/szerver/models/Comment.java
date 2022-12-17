@@ -9,6 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -41,10 +42,10 @@ public class Comment implements Serializable {
     private User creator;
 
     @CreationTimestamp
-    private LocalDateTime createDateTime;
+    private Date createDateTime;
 
     @UpdateTimestamp
-    private LocalDateTime updateDateTime;
+    private Date updateDateTime;
 
     public Comment(final String commentMessage, final User creator) {
         this.commentMessage = commentMessage;

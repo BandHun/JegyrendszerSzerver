@@ -52,8 +52,35 @@ public class CompanyController {
     }
 
     @PostMapping("/joinrequest/create")
-    public ResponseEntity<JoinCompanyRequest> addcompany(@RequestBody final Long companyId) {
+    public ResponseEntity<JoinCompanyRequest> createJoinRequest(@RequestBody final Long companyId) {
         return new ResponseEntity<>(companyService.createJoinRequest(companyId), HttpStatus.OK);
+    }
+
+    @GetMapping("/joinrequest/getbyuser")
+    public ResponseEntity<List<JoinCompanyRequest>> getJoinRequestsbyuser() {
+        System.out.println("JOIN REQUEST GET");
+        return new ResponseEntity<>(companyService.getJoinRequests(), HttpStatus.OK);
+    }
+
+    @GetMapping("/joinrequest/getbycompany")
+    public ResponseEntity<List<JoinCompanyRequest>> getJoinRequestsbycompany() {
+        System.out.println("JOIN REQUEST GET");
+        return new ResponseEntity<>(companyService.getJoinRequestsByCompany(), HttpStatus.OK);
+    }
+
+    @PostMapping("/joinrequest/accept")
+    public ResponseEntity<?> acceptJoinRequest(@RequestBody JoinCompanyRequest request) {
+
+        //userService.addCompany(request.getUser(),request.getCompany());
+        companyService.acceptJoinRequest(request);
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
+
+    @PostMapping("/joinrequest/decline")
+    public ResponseEntity<?> declineJoinRequest(@RequestBody JoinCompanyRequest request) {
+        companyService.declineJoinRequest(request);
+        return new ResponseEntity<>( HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

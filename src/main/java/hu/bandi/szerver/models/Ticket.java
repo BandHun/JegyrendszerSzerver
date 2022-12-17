@@ -32,7 +32,7 @@ public class Ticket implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
-    boolean isValid;
+    boolean valid;
 
     private String title;
     @ManyToOne
@@ -71,6 +71,10 @@ public class Ticket implements Serializable {
     @ManyToOne
     private Sprint sprint;
 
+    @JsonIgnore
+    @ManyToOne
+    private Teams teams;
+
     public Ticket(final String title, final String description, @NonNull final User author, final int storyPoints,
                   final Company company) {
         this.title = title;
@@ -79,15 +83,17 @@ public class Ticket implements Serializable {
         this.storyPoints = storyPoints;
         this.company = company;
         project = null;
-        isValid = true;
+        valid = true;
         createdAt = new java.sql.Date(System.currentTimeMillis());
         comments = new ArrayList<Comment>();
         status = TicketStatus.TODO;
+        teams = null;
+        documents=new ArrayList<>();
     }
 
-    public void addDocument(final Document document) {
+    /*public void addDocument(final Document document) {
         documents.add(document);
-    }
+    }*/
 
     public void removeDocument(final Document document) {
         documents.remove(document);

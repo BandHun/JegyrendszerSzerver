@@ -1,5 +1,6 @@
 package hu.bandi.szerver.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,11 +31,16 @@ public class Teams implements Serializable {
 
     private String name;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
     @OneToOne
     private TeamsTable teamsTable;
 
-    public Teams(final String name) {
+    public Teams(final String name, Company company) {
         this.name = name;
+        this.company = company;
         isValid = true;
     }
 

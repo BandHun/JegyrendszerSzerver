@@ -43,19 +43,15 @@ public class DocumentController {
         return new ResponseEntity<>(ticketService.findById(documentId).getDocuments(), HttpStatus.OK);
     }
     @PostMapping("/toticket/{id}")
-    public ResponseEntity<Document> addToTicket(@PathVariable("id") Long ticketId, @RequestParam("file") MultipartFile file) throws IOException {
-        System.out.println("CREATE DOCUMENT");
-        System.out.println(file);
-        Document create = documentService.addDocument(file);
+    public ResponseEntity<Document> addToTicket(@PathVariable("id") Long ticketId, @RequestParam("file") MultipartFile file,@RequestParam("filename") String name) throws IOException {
+        Document create = documentService.addDocument(file,name);
         ticketService.addDocument(create,ticketId);
         return new ResponseEntity<>(create, HttpStatus.OK);
     }
 
-    @PostMapping("/tocomment/{id}")
-    public ResponseEntity<Document> getCompanyById(@PathVariable("id") final Long id,@RequestBody MultipartFile file) throws IOException {
-        Document create = documentService.addDocument(file);
-        commentService.addDocument(create,id);
-        return new ResponseEntity<>(create, HttpStatus.OK);
+    @GetMapping("/getdata/{id}")
+    public ResponseEntity<byte[]> getData(@PathVariable("id") Long id){
+        return new ResponseEntity<>(documentService.getById(id).getData(),HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

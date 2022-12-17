@@ -3,6 +3,7 @@ package hu.bandi.szerver.services.interfaces;
 import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
+import hu.bandi.szerver.models.UserLevel;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
@@ -24,9 +25,16 @@ public interface UserService extends UserDetailsService {
 
     User updateUser(User user);
 
+    User setAdmin(long userid);
+
     User addCompany(Company company);
 
+    User addCompany(User user, Company company);
+
     User addTeam(Teams team);
+
+
+    User addTeam(Long userId, Teams team);
 
     User removeTeam(User user);
 
@@ -36,4 +44,7 @@ public interface UserService extends UserDetailsService {
 
     void removeCompany(User user, Company company);
 
+    void joinCompany(Company company, User user);
+
+    User setLevel(Long userId, UserLevel level);
 }

@@ -22,6 +22,18 @@ public class SprintServceImpl implements SprintService {
 
     }
 
+    public void addTicketToSprint(Sprint sprint, Ticket ticket){
+        if(sprint!=null){
+        sprint.addTicket(ticket);
+        sprintRepository.save(sprint);
+    }}
+
+
+    public void aremoveTicketToSprint(Sprint sprint, Ticket ticket){
+        if(sprint!=null){
+        sprint.removeTicket(ticket);
+        sprintRepository.save(sprint);}
+    }
     @Override
     public Sprint getTicketById(final Long id) {
         return sprintRepository.findById(id).orElseThrow(

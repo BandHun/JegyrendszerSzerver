@@ -6,6 +6,7 @@ import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
 import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.TeamsService;
+import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,9 @@ public class TeamsController {
 
     @Autowired
     private final TeamsService teamsService;
+
+    @Autowired
+    private TicketService ticketService;
 
     @Autowired
     UserService userService;

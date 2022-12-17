@@ -38,14 +38,20 @@ public class HourRecordController {
         return new ResponseEntity<>(hourRecordService.getByTicket(ticketid), HttpStatus.OK);
     }
 
-    @GetMapping("/getforuser/{userid}")
-    public ResponseEntity<Long> getHoursByUser(@PathVariable("userid") final Long userid) {
-        return new ResponseEntity<>(hourRecordService.sumHoursForUser(userid), HttpStatus.OK);
+    @PostMapping("/getforuser/{userid}")
+    public ResponseEntity<Long> getHoursByUser(@PathVariable("userid") final Long userid, @RequestBody Date toDate) {
+        return new ResponseEntity<>(hourRecordService.sumHoursForUser(userid, toDate), HttpStatus.OK);
     }
 
     @GetMapping("/gethoursforuser/{id}")
     public ResponseEntity<Long> r(@PathVariable("id") long userId, Date from){
         return new ResponseEntity<>(hourRecordService.getUserWorkedHours(userId,from),HttpStatus.OK);    }
+
+
+    @GetMapping("/gethoursforticket/{id}")
+    public ResponseEntity<Long> ticketUsedStorypoints(@PathVariable("id") long ticketId){
+        return new ResponseEntity<>(hourRecordService.getTicketUsetStorypoints(ticketId),HttpStatus.OK);    }
+
 
 
     @PostMapping("/loghour")

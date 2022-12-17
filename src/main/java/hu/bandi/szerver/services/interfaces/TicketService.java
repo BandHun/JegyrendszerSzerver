@@ -34,4 +34,6 @@ public interface TicketService {
     void deleteTicket(Long ticketId);
 
     void changeTicketStatus(Long ticketId, TicketStatus toStatus);
+
+    void addTeam(Long ticketId, Teams teams);
 }

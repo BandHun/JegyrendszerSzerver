@@ -37,6 +37,16 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
+    public List<JoinCompanyRequest> getJoinRequests(){
+        return joinRequestRepository.findByUser(CurrentUserService.getCurrentUser());
+    }
+
+    @Override
+    public List<JoinCompanyRequest> getJoinRequestsByCompany(){
+        return joinRequestRepository.findByCompany(CurrentUserService.getCurrentUser().getCompany());
+    }
+
+    @Override
     public List<Company> findAllCompany() {
         return companyRepository.findAll();
     }
@@ -98,6 +108,20 @@ public class CompanyServiceImpl implements CompanyService {
         toEdit.removeProject(project);
         companyRepository.save(toEdit);
     }
+
+    @Override
+    public void acceptJoinRequest(JoinCompanyRequest request) {
+        userService.joinCompany(request.getCompany(),request.getUser());
+
+        joinRequestRepository.delete(request);
+    }
+
+    @Override
+    public void declineJoinRequest(JoinCompanyRequest request) {
+request.setRequestStatus(RequestStatus.DECLINED);
+joinRequestRepository.save(request);
+    }
+
 
     private Company getById(final Long id) {
         return companyRepository.findById(id).orElseThrow(

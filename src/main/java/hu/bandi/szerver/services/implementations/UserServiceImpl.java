@@ -93,6 +93,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User setAdmin(long userid) {
+        final User current = CurrentUserService.getCurrentUser();
+        current.setUserLevel(UserLevel.ADMIN);
+        return userRepository.save(current);
+    }
+
+    @Override
     public User addCompany(final Company company) {
         final User current = CurrentUserService.getCurrentUser();
         current.setCompany(company);
@@ -101,8 +108,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User addCompany(User user, Company company) {
+        user.setCompany(company);
+        return userRepository.save(user);
+    }
+
+    @Override
     public User addTeam(final Teams team) {
         final User current = CurrentUserService.getCurrentUser();
+        current.setTeams(team);
+        return userRepository.save(current);
+    }
+
+    @Override
+    public User addTeam(Long userId, Teams team) {
+        final User current = findById(userId);
         current.setTeams(team);
         return userRepository.save(current);
     }
@@ -145,6 +165,21 @@ public class UserServiceImpl implements UserService {
     public void removeCompany( User user, final Company company) {
         user.setCompany(null);
         userRepository.save(user);
+    }
+
+    @Override
+    public void joinCompany(Company company, User user) {
+        User toJoin = findById(user.getId());
+        toJoin.setCompany(company);
+        toJoin.setUserLevel(UserLevel.DEVELOPER);
+        userRepository.save(toJoin);
+    }
+
+    @Override
+    public User setLevel(Long userId, UserLevel level) {
+        User toEdit = findById(userId);
+        toEdit.setUserLevel(level);
+        return userRepository.save(toEdit);
     }
 
 

@@ -21,8 +21,6 @@ public class Sprint {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    private boolean valid;
-
     private Date startDate;
 
     private Date endDate;
@@ -33,7 +31,20 @@ public class Sprint {
     public Sprint(Date startDate,Date endDate){
         this.endDate=endDate;
         this.startDate=startDate;
-        this.valid = true;
         this.tickets=new ArrayList<>();
+    }
+
+    public void addTicket(Ticket ticket){
+        if(this.tickets.contains(ticket)){
+            return;
+        }
+        this.tickets.add(ticket);
+    }
+
+    public void removeTicket(Ticket ticket){
+        if(!this.tickets.contains(ticket)){
+            return;
+        }
+        this.tickets.remove(ticket);
     }
 }

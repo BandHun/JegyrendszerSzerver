@@ -1,11 +1,11 @@
 package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.Sprint;
+import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.Ticket;
 import hu.bandi.szerver.models.TicketStatus;
 import hu.bandi.szerver.repositories.TicketRepository;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
-import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.ProjectService;
 import hu.bandi.szerver.services.interfaces.TicketService;
@@ -16,7 +16,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/ticket")
@@ -48,7 +47,7 @@ public class TicketController {
 
     @GetMapping("/allbycompany")
     public ResponseEntity<List<Ticket>> getAllByCompanyTicket() {
-        return new ResponseEntity<>(ticketRepository.findByCompany(CurrentUserService.getCurrentUser().getCompany()),
+        return new ResponseEntity<>(ticketRepository.findByCompanyAndValid(CurrentUserService.getCurrentUser().getCompany(),true),
                                     HttpStatus.OK);
     }
 
@@ -57,9 +56,21 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.findById(id), HttpStatus.OK);
     }
 
+
+    @GetMapping("/getteam/{id}")
+    public ResponseEntity<Teams> getTicketTeam(@PathVariable("id") final Long id) {
+        return new ResponseEntity<>(ticketService.findById(id).getTeams(), HttpStatus.OK);
+    }
+
+
+    @GetMapping("/getsprint/{id}")
+    public ResponseEntity<Sprint> getTicketSprint(@PathVariable("id") final Long id) {
+        return new ResponseEntity<>(ticketService.findById(id).getSprint(), HttpStatus.OK);
+    }
+
     @GetMapping("/alltouser")
     public ResponseEntity<List<Ticket>> getTicketByCompany() {
-        return new ResponseEntity<>(ticketRepository.findByCompany(CurrentUserService.getCurrentUser().getCompany()),
+        return new ResponseEntity<>(ticketRepository.findByCompanyAndValid(CurrentUserService.getCurrentUser().getCompany(), true),
                                     HttpStatus.OK);
     }
 
@@ -86,6 +97,12 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.updateTicket(ticket), HttpStatus.OK);
     }
 
+    @PostMapping("/changestatus/{id}")
+    public ResponseEntity<?> changeStatus(@PathVariable("id") final Long ticketId, @RequestBody final String status){
+        ticketService.changeTicketStatus(ticketId,TicketStatus.parse(status));
+        return new ResponseEntity<>( HttpStatus.OK);
+    }
+
     @PutMapping("/assigneto/{id}")
     public ResponseEntity<Ticket> assigneTicket(@PathVariable("id") final Long ticketId,
                                                 @RequestBody final Long userId) {
@@ -98,6 +115,15 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.addToProject(ticketId, projectService.findById(projectId)),
                                     HttpStatus.OK);
     }
+    @PutMapping("/addtoteam/{id}")
+    public ResponseEntity<?> addtoProject(@PathVariable("id") final Long ticketId,
+                                               @RequestBody final Teams team) {
+        ticketService.addTeam(ticketId, team);
+        return new ResponseEntity<>(
+                HttpStatus.OK);
+    }
+
+
 
     @PutMapping("/updateStatus/{id}")
     public ResponseEntity<?> updateTicketStatus(@PathVariable("id") final Long id,

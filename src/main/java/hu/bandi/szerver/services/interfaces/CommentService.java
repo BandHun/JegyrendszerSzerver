@@ -9,9 +9,9 @@ import java.util.Optional;
 
 public interface CommentService {
 
-    Comment addComment(String message, User user);
+    Comment addComment(Comment comment);
 
-    void modifyComment(Long id, String message);
+    Comment modifyComment(Long id, String message);
 
     void deleteComment(Long id);
 
