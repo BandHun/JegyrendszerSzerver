@@ -4,7 +4,6 @@ import hu.bandi.szerver.models.Sprint;
 import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
-import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.TeamsService;
 import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
@@ -35,7 +34,8 @@ public class TeamsController {
     @GetMapping("/allbycompany")
     public ResponseEntity<List<Teams>> getAllTeams() {
         return new ResponseEntity<>(
-                teamsService.findAllByCompanyIdTeams(CurrentUserService.getCurrentUser().getCompany().getId()), HttpStatus.OK);
+                teamsService.findAllByCompanyIdTeams(CurrentUserService.getCurrentUser().getCompany().getId()),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -56,8 +56,9 @@ public class TeamsController {
     @GetMapping("/userstableid/{id}")
     public ResponseEntity<List<User>> getusersBytableId(@PathVariable("id") final Long id) {
 
-        return new ResponseEntity<>( userService.findAllByTeam(teamsService.findTeamByTableId(id)),HttpStatus.OK);
+        return new ResponseEntity<>(userService.findAllByTeam(teamsService.findTeamByTableId(id)), HttpStatus.OK);
     }
+
     @PostMapping("/add")
     public ResponseEntity<Teams> addTeams(@RequestBody final String name) {
         return new ResponseEntity<>(teamsService.addTeam(name), HttpStatus.CREATED);

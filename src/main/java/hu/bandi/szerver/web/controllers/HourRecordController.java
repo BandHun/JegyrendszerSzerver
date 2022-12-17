@@ -3,7 +3,6 @@ package hu.bandi.szerver.web.controllers;
 import hu.bandi.szerver.models.HourRecords;
 import hu.bandi.szerver.repositories.HourRecordRepository;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
-import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.HourRecordService;
 import hu.bandi.szerver.services.interfaces.TicketService;
 import hu.bandi.szerver.services.interfaces.UserService;
@@ -39,19 +38,20 @@ public class HourRecordController {
     }
 
     @PostMapping("/getforuser/{userid}")
-    public ResponseEntity<Long> getHoursByUser(@PathVariable("userid") final Long userid, @RequestBody Date toDate) {
+    public ResponseEntity<Long> getHoursByUser(@PathVariable("userid") final Long userid, @RequestBody final Date toDate) {
         return new ResponseEntity<>(hourRecordService.sumHoursForUser(userid, toDate), HttpStatus.OK);
     }
 
     @GetMapping("/gethoursforuser/{id}")
-    public ResponseEntity<Long> r(@PathVariable("id") long userId, Date from){
-        return new ResponseEntity<>(hourRecordService.getUserWorkedHours(userId,from),HttpStatus.OK);    }
+    public ResponseEntity<Long> r(@PathVariable("id") final long userId, final Date from) {
+        return new ResponseEntity<>(hourRecordService.getUserWorkedHours(userId, from), HttpStatus.OK);
+    }
 
 
     @GetMapping("/gethoursforticket/{id}")
-    public ResponseEntity<Long> ticketUsedStorypoints(@PathVariable("id") long ticketId){
-        return new ResponseEntity<>(hourRecordService.getTicketUsetStorypoints(ticketId),HttpStatus.OK);    }
-
+    public ResponseEntity<Long> ticketUsedStorypoints(@PathVariable("id") final long ticketId) {
+        return new ResponseEntity<>(hourRecordService.getTicketUsetStorypoints(ticketId), HttpStatus.OK);
+    }
 
 
     @PostMapping("/loghour")

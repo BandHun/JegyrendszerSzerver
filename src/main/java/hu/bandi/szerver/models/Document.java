@@ -1,21 +1,12 @@
 package hu.bandi.szerver.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
-
-
-/*
- * Dokumentum
- *
- * A feladatokhoz vagy kommentekhez csatolt dokumentum.
- * Tároljuk az eredeti dokumentum nevét és egy lokációs stringet ahol a dokumentum megtalálható.
- * */
+ 
 
 @Entity
 @Data

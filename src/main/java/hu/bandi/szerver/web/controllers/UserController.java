@@ -5,7 +5,6 @@ import hu.bandi.szerver.models.Teams;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.models.UserLevel;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
-import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.TeamsService;
 import hu.bandi.szerver.services.interfaces.UserService;
@@ -36,7 +35,9 @@ public class UserController {
 
     @GetMapping("/currentuser")
     public ResponseEntity<User> getCurrentUser() {
-        return new ResponseEntity<>(userService.findByEmailaddrasse(SecurityContextHolder.getContext().getAuthentication().getName()), HttpStatus.OK);
+        return new ResponseEntity<>(
+                userService.findByEmailaddrasse(SecurityContextHolder.getContext().getAuthentication().getName()),
+                HttpStatus.OK);
     }
 
     @GetMapping("/allatmycompany")
@@ -50,6 +51,7 @@ public class UserController {
         return new ResponseEntity<>(userService.findAllByCompany(
                 companyService.findById(CurrentUserService.getCurrentUser().getCompany().getId())), HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable("id") final Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
@@ -67,8 +69,8 @@ public class UserController {
     }
 
     @PutMapping("/setlevel/{id}")
-    public ResponseEntity<User> setlevel(@PathVariable("id") final Long userId, @RequestBody UserLevel level){
-        return new ResponseEntity<>(userService.setLevel(userId,level), HttpStatus.OK);
+    public ResponseEntity<User> setlevel(@PathVariable("id") final Long userId, @RequestBody final UserLevel level) {
+        return new ResponseEntity<>(userService.setLevel(userId, level), HttpStatus.OK);
     }
 
     @PutMapping("/update")
@@ -77,15 +79,15 @@ public class UserController {
     }
 
     @PutMapping("/addtoteambyid/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable("id") Long id, @RequestBody final User user) {
-        return new ResponseEntity<>(userService.addTeam(user.getId(),teamsService.findById(id)), HttpStatus.OK);
+    public ResponseEntity<User> updateUser(@PathVariable("id") final Long id, @RequestBody final User user) {
+        return new ResponseEntity<>(userService.addTeam(user.getId(), teamsService.findById(id)), HttpStatus.OK);
     }
 
     @PostMapping("/setadmin/{id}")
-    public ResponseEntity<User> setAdmin(@PathVariable("id") long id) {
-        if(CurrentUserService.getCurrentUser().getUserLevel() ==UserLevel.ADMIN){
+    public ResponseEntity<User> setAdmin(@PathVariable("id") final long id) {
+        if (CurrentUserService.getCurrentUser().getUserLevel() == UserLevel.ADMIN) {
             return new ResponseEntity<>(userService.setAdmin(id), HttpStatus.OK);
-        }else {
+        } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
 

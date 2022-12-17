@@ -14,14 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-/*
- * Jegy
- *
- * Szerepe, hogy feladatokat és a róluk tudható összes információt tárolja. Név, létrehozó, felelős, létrehozés
- * dátuma, határidő, jelenlegi állapot, hozzá kapcsolódó dokumentumok és kommentek.
- * */
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -88,12 +80,9 @@ public class Ticket implements Serializable {
         comments = new ArrayList<Comment>();
         status = TicketStatus.TODO;
         teams = null;
-        documents=new ArrayList<>();
+        documents = new ArrayList<>();
     }
 
-    /*public void addDocument(final Document document) {
-        documents.add(document);
-    }*/
 
     public void removeDocument(final Document document) {
         documents.remove(document);

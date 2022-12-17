@@ -8,11 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class DocumentServiceImpl implements DocumentService {
@@ -24,10 +20,9 @@ public class DocumentServiceImpl implements DocumentService {
 
     @Override
     public Document addDocument(final MultipartFile file, final String filename) throws IOException {
-        System.out.println(file.getBytes().length);
-        System.out.println(file.getName());
         return documentRepository.save(new Document(file.getBytes(), filename));
     }
+
     @Override
     public void deleteDocument(final Long id) {
         final Document toDelete = getById(id);
@@ -36,7 +31,7 @@ public class DocumentServiceImpl implements DocumentService {
     }
 
     @Override
-    public Document getById(Long id) {
+    public Document getById(final Long id) {
         return documentRepository.findById(id).orElseThrow(
                 () -> new RuntimeException("Comment not found by id:" + id + "."));
     }

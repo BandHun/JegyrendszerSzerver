@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
+ 
 @Entity
 @Data
 @AllArgsConstructor
@@ -28,21 +28,21 @@ public class Sprint {
     @OneToMany
     private List<Ticket> tickets;
 
-    public Sprint(Date startDate,Date endDate){
-        this.endDate=endDate;
-        this.startDate=startDate;
-        this.tickets=new ArrayList<>();
+    public Sprint(Date startDate, Date endDate) {
+        this.endDate = endDate;
+        this.startDate = startDate;
+        this.tickets = new ArrayList<>();
     }
 
-    public void addTicket(Ticket ticket){
-        if(this.tickets.contains(ticket)){
+    public void addTicket(Ticket ticket) {
+        if (this.tickets.contains(ticket)) {
             return;
         }
         this.tickets.add(ticket);
     }
 
-    public void removeTicket(Ticket ticket){
-        if(!this.tickets.contains(ticket)){
+    public void removeTicket(Ticket ticket) {
+        if (!this.tickets.contains(ticket)) {
             return;
         }
         this.tickets.remove(ticket);

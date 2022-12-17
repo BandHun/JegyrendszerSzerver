@@ -9,13 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-
-/*
- * Komment
- *
- * Szerepe, hogy tároljon egy felhasználó által írt szöveget és a hozzá tartozó dokumentumokat.
- * */
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -46,17 +39,17 @@ public class User implements Serializable {
 
     public User(final String name, final String emailaddress, final String password, final Company company) {
         this.name = name;
-        this.isAdmin=false;
+        this.isAdmin = false;
         this.emailaddress = emailaddress;
         this.password = password;
         this.company = company;
         this.userLevel = UserLevel.UNKNOWN;
     }
 
-    public User update(User toUpdate){
-        this.name =toUpdate.getName();
+    public User update(final User toUpdate) {
+        this.name = toUpdate.getName();
         this.emailaddress = toUpdate.getEmailaddress();
-        this.teams=toUpdate.getTeams();
+        this.teams = toUpdate.getTeams();
         return this;
     }
 }

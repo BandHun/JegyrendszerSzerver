@@ -26,7 +26,6 @@ public class PublicController {
 
     @PostMapping("/userregistration")
     public ResponseEntity<User> addUser(@RequestBody final Map<String, String> body) {
-        System.out.println("REGISTRATION");
         return new ResponseEntity<>(
                 userService.registerUser(body.get("name"), body.get("emailaddress"), body.get("password")),
                 HttpStatus.CREATED);
@@ -34,10 +33,10 @@ public class PublicController {
 
     @PostMapping("/forgetpassword")
     public ResponseEntity<?> forgotpasswrd(@RequestBody final String email) {
-        Long userId = userService.findByEmailaddrasse(email).getId();
-        String newPassword = UUID.randomUUID().toString();
-        userService.changePassword(userId,newPassword);
-        mailSenderService.sendForgetPassword(email,newPassword);
+        final Long userId = userService.findByEmailaddrasse(email).getId();
+        final String newPassword = UUID.randomUUID().toString();
+        userService.changePassword(userId, newPassword);
+        mailSenderService.sendForgetPassword(email, newPassword);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

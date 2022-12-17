@@ -26,9 +26,9 @@ public class JoinCompanyRequest {
 
     private RequestStatus requestStatus;
 
-    public JoinCompanyRequest(Company company,User user){
-        this.company=company;
-        this.user=user;
-        this.requestStatus=RequestStatus.UNDER_REVIEW;
+    public JoinCompanyRequest(final Company company, final User user) {
+        this.company = company;
+        this.user = user;
+        this.requestStatus = RequestStatus.UNDER_REVIEW;
     }
 }

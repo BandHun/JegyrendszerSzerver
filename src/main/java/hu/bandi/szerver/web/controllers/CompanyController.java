@@ -4,7 +4,6 @@ import hu.bandi.szerver.models.Company;
 import hu.bandi.szerver.models.JoinCompanyRequest;
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
-import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.CompanyService;
 import hu.bandi.szerver.services.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,9 +19,9 @@ public class CompanyController {
     @Autowired
     private final CompanyService companyService;
 
-    private UserService userService;
+    private final UserService userService;
 
-    public CompanyController(final CompanyService companyService, UserService userService) {
+    public CompanyController(final CompanyService companyService, final UserService userService) {
         this.companyService = companyService;
         this.userService = userService;
     }
@@ -44,10 +43,10 @@ public class CompanyController {
 
     @PostMapping("/join/{id}")
     public ResponseEntity<?> addCompany(@PathVariable("id") final Long companyId) {
-        User toadd = CurrentUserService.getCurrentUser();
-        Company company = companyService.findById(companyId);
+        final User toadd = CurrentUserService.getCurrentUser();
+        final Company company = companyService.findById(companyId);
         userService.addCompany(company);
-        companyService.addUser(companyId,toadd);
+        companyService.addUser(companyId, toadd);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -58,29 +57,26 @@ public class CompanyController {
 
     @GetMapping("/joinrequest/getbyuser")
     public ResponseEntity<List<JoinCompanyRequest>> getJoinRequestsbyuser() {
-        System.out.println("JOIN REQUEST GET");
         return new ResponseEntity<>(companyService.getJoinRequests(), HttpStatus.OK);
     }
 
     @GetMapping("/joinrequest/getbycompany")
     public ResponseEntity<List<JoinCompanyRequest>> getJoinRequestsbycompany() {
-        System.out.println("JOIN REQUEST GET");
         return new ResponseEntity<>(companyService.getJoinRequestsByCompany(), HttpStatus.OK);
     }
 
     @PostMapping("/joinrequest/accept")
-    public ResponseEntity<?> acceptJoinRequest(@RequestBody JoinCompanyRequest request) {
+    public ResponseEntity<?> acceptJoinRequest(@RequestBody final JoinCompanyRequest request) {
 
-        //userService.addCompany(request.getUser(),request.getCompany());
         companyService.acceptJoinRequest(request);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
     @PostMapping("/joinrequest/decline")
-    public ResponseEntity<?> declineJoinRequest(@RequestBody JoinCompanyRequest request) {
+    public ResponseEntity<?> declineJoinRequest(@RequestBody final JoinCompanyRequest request) {
         companyService.declineJoinRequest(request);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")

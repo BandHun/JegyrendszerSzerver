@@ -9,14 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 
-
-/*
- * Csapat
- *
- * Szerepe, hogy csapatokat definiáljon és tartsa nyílván, hogy mely céghez tartozik és mely felhasználók tartoznak
- * hozzá. Emellett tárolja a hozzá tartozó táblákat is;
- * */
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -38,7 +30,7 @@ public class Teams implements Serializable {
     @OneToOne
     private TeamsTable teamsTable;
 
-    public Teams(final String name, Company company) {
+    public Teams(final String name, final Company company) {
         this.name = name;
         this.company = company;
         isValid = true;

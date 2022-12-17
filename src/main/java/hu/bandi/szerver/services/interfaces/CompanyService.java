@@ -11,14 +11,14 @@ public interface CompanyService {
     List<Company> findAllCompany();
 
     List<JoinCompanyRequest> getJoinRequests();
-     List<JoinCompanyRequest> getJoinRequestsByCompany();
 
+    List<JoinCompanyRequest> getJoinRequestsByCompany();
 
-        Company findById(Long id);
-     JoinCompanyRequest createJoinRequest(final Long companyId);
+    Company findById(Long id);
 
+    JoinCompanyRequest createJoinRequest(final Long companyId);
 
-        void addUser(Long comanyId, User user);
+    void addUser(Long comanyId, User user);
 
     void addTeam(Company company, Teams teams);
 

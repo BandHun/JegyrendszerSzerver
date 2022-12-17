@@ -19,16 +19,16 @@ public class TicketServiceImpl implements TicketService {
 
 
     @Override
-    public void removeTicketsFromSprint(List<Ticket> t) {
-for(Ticket tic:t){
-    tic.setSprint(null);
-    ticketRepository.save(tic);
-}
+    public void removeTicketsFromSprint(final List<Ticket> t) {
+        for (final Ticket tic : t) {
+            tic.setSprint(null);
+            ticketRepository.save(tic);
+        }
     }
 
     @Override
-    public void setUsedStroyPoints(Ticket ticket, long hours) {
-        Ticket t = getTicket(ticket.getId());
+    public void setUsedStroyPoints(final Ticket ticket, final long hours) {
+        final Ticket t = getTicket(ticket.getId());
         t.setUsedStroyPoints(hours);
         ticketRepository.save(t);
     }
@@ -44,29 +44,26 @@ for(Ticket tic:t){
     }
 
     @Override
-    public void addDocument(Document document, Long ticketId) {
-        Ticket toEdit= findById(ticketId);
-        System.out.println(toEdit.getDocuments().size());
-        System.out.println(document.getId());
-        List<Document> d = toEdit.getDocuments();
+    public void addDocument(final Document document, final Long ticketId) {
+        final Ticket toEdit = findById(ticketId);
+        final List<Document> d = toEdit.getDocuments();
         d.add(document);
         toEdit.setDocuments(d);
-        System.out.println(toEdit.getDocuments().size());
         ticketRepository.save(toEdit);
     }
 
     @Override
-    public void removeUserFromAssignee(User user) {
-        for(Ticket ticket :ticketRepository.findByAssigneeAndValid(user, true)){
+    public void removeUserFromAssignee(final User user) {
+        for (final Ticket ticket : ticketRepository.findByAssigneeAndValid(user, true)) {
             ticket.setAssignee(null);
             ticketRepository.save(ticket);
         }
     }
 
     @Override
-    public void deleteDocument(Document document) {
-        List<Ticket> all = ticketRepository.findAll();
-        for(Ticket a:all){
+    public void deleteDocument(final Document document) {
+        final List<Ticket> all = ticketRepository.findAll();
+        for (final Ticket a : all) {
             a.removeDocument(document);
         }
     }
@@ -77,7 +74,7 @@ for(Ticket tic:t){
     }
 
     @Override
-    public Ticket addTicket(Ticket ticket) {
+    public Ticket addTicket(final Ticket ticket) {
         final User currentUser = CurrentUserService.getCurrentUser();
         ticket.setAuthor(currentUser);
         ticket.setCompany(currentUser.getCompany());
@@ -103,26 +100,21 @@ for(Ticket tic:t){
 
     @Override
     public Ticket updateTicket(final Ticket ticket) {
-        Ticket toUpdate = findById(ticket.getId());
-        System.out.println("TICKET UPDATE");
-        System.out.println(ticket.getSprint());
-        System.out.println(ticket.getTeams());
-        System.out.println(ticket.getAssignee());
+        final Ticket toUpdate = findById(ticket.getId());
         ticket.setDocuments(toUpdate.getDocuments());
-        if(toUpdate.getSprint() != null){
-            sprintService.aremoveTicketToSprint(ticket.getSprint(),toUpdate);
+        if (toUpdate.getSprint() != null) {
+            sprintService.aremoveTicketToSprint(ticket.getSprint(), toUpdate);
         }
-        if(ticket.getSprint()!=null){
-            try{
-            sprintService.addTicketToSprint(ticket.getSprint(),toUpdate);
-        }catch (Exception e){
+        if (ticket.getSprint() != null) {
+            try {
+                sprintService.addTicketToSprint(ticket.getSprint(), toUpdate);
+            } catch (final Exception e) {
                 System.out.println(e.getMessage());
             }
         }
-        if(ticket.getStatus() == toUpdate.getStatus()){
+        if (ticket.getStatus() == toUpdate.getStatus()) {
             return ticketRepository.save(ticket);
-        }
-        else {
+        } else {
             changeTicketStatus(ticket.getId(), ticket.getStatus());
             return ticketRepository.save(ticket);
         }
@@ -147,7 +139,6 @@ for(Ticket tic:t){
     public void changeTicketStatus(final Long ticketId, final TicketStatus toStatus) {
         final Ticket toEdit = getTicket(ticketId);
         if (!TicketStatus.isValidChange(toEdit.getStatus(), toStatus)) {
-            System.out.println("BAD STATUS CHANGE");
             throw new RuntimeException(
                     "Invalid status change from " + toEdit.getStatus() + " to " + toStatus.name() + ".");
         }
@@ -156,8 +147,8 @@ for(Ticket tic:t){
     }
 
     @Override
-    public void addTeam(Long ticketId, Teams teams) {
-        Ticket toEdit = findById(ticketId);
+    public void addTeam(final Long ticketId, final Teams teams) {
+        final Ticket toEdit = findById(ticketId);
         toEdit.setTeams(teams);
         ticketRepository.save(toEdit);
     }

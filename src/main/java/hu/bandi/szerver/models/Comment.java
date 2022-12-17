@@ -1,6 +1,5 @@
 package hu.bandi.szerver.models;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,17 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
-import java.time.LocalDateTime;
 import java.util.List;
-
-
-
-/*
- * Komment
- *
- * Szerepe, hogy tároljon egy felhasználó által írt szöveget és a hozzá tartozó dokumentumokat.
- * Emellett tároljuk a létrehozási és utolsó módosítási időpontot is.
- * */
 
 @Entity
 @Data
@@ -53,11 +42,11 @@ public class Comment implements Serializable {
         isValid = true;
     }
 
-    public void addDocument(Document document){
+    public void addDocument(final Document document) {
         this.documents.add(document);
     }
 
-    public void aremoveDocument(Document document){
+    public void aremoveDocument(final Document document) {
         this.documents.remove(document);
     }
 }

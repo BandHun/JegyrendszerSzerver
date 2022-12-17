@@ -10,13 +10,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-/*
- * Cég
- *
- * A cég tárolja a hozzá tartozó felhasználókat, csoportokat, projekteket
- * */
 @Entity
 @Data
 @AllArgsConstructor
@@ -49,9 +42,6 @@ public class Company implements Serializable {
     }
 
     public void addUser(final User user) {
-        System.out.println("USER ADD");
-        System.out.println(user);
-        System.out.println(users);
         users.add(user);
     }
 

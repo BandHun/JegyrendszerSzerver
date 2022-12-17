@@ -2,7 +2,7 @@ package hu.bandi.szerver.models;
 
 public enum TicketStatus {
     TODO, IN_PROGRESS, IN_REVIEW, IN_TEST, DEMO, DONE;
-
+ 
     TicketStatus() {
     }
 
@@ -26,26 +26,25 @@ public enum TicketStatus {
         return false;
     }
 
-    public static TicketStatus parse(String status){
-        if(status.equals("TODO")){
+    public static TicketStatus parse(String status) {
+        if (status.equals("TODO")) {
             return TODO;
         }
-        if(status.equals("IN_PROGRESS")){
+        if (status.equals("IN_PROGRESS")) {
             return IN_PROGRESS;
         }
-        if(status.equals("IN_REVIEW")){
+        if (status.equals("IN_REVIEW")) {
             return IN_REVIEW;
         }
-        if(status.equals("IN_TEST")){
+        if (status.equals("IN_TEST")) {
             return IN_TEST;
         }
-        if(status.equals("DEMO")){
+        if (status.equals("DEMO")) {
             return DEMO;
         }
-        if(status.equals("DONE")){
+        if (status.equals("DONE")) {
             return DONE;
-        }
-        else {
+        } else {
             throw new RuntimeException("INVALID STATSU");
         }
     }

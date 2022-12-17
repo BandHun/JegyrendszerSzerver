@@ -49,7 +49,7 @@ public class TeamsServiceImpl implements TeamsService {
     @Override
     public Teams addTeam(final String name) {
         final User user = CurrentUserService.getCurrentUser();
-        final Teams newTeam = new Teams(name,user.getCompany());
+        final Teams newTeam = new Teams(name, user.getCompany());
         teamsRepository.save(newTeam);
         userService.removeTeam(user);
         userService.addTeam(newTeam);
@@ -73,21 +73,20 @@ public class TeamsServiceImpl implements TeamsService {
     }
 
     @Override
-    public void addSprintTotable(Sprint sprint, Long teamid) {
-        teamsTableService.addSprint(sprint,findTableByTeamId(teamid));
+    public void addSprintTotable(final Sprint sprint, final Long teamid) {
+        teamsTableService.addSprint(sprint, findTableByTeamId(teamid));
     }
 
     @Override
-    public TeamsTable findTableByTeamId(Long teamid){
+    public TeamsTable findTableByTeamId(final Long teamid) {
         return teamsRepository.findByTeamsTable(teamsTableService.findById(teamid)).getTeamsTable();
     }
 
     @Override
-    public Teams findTeamByTableId(long tableId){
-        TeamsTable t = teamsTableService.findById(tableId);
+    public Teams findTeamByTableId(final long tableId) {
+        final TeamsTable t = teamsTableService.findById(tableId);
         return teamsRepository.findByTeamsTable(t);
     }
-
 
 
     private Teams getTeams(final Long id) {

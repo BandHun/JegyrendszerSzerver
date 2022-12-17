@@ -16,7 +16,7 @@ public class TeamsTableServiceImpl implements TeamsTableService {
 
     @Override
     public TeamsTable createTable(final Teams team) {
-        TeamsTable table = new TeamsTable(team.getName()+"s Tables", team);
+        final TeamsTable table = new TeamsTable(team.getName() + "s Tables", team);
         return teamsTableRepository.save(table);
     }
 
@@ -42,12 +42,13 @@ public class TeamsTableServiceImpl implements TeamsTableService {
     }
 
     @Override
-    public TeamsTable findById(Long id) {
-        return teamsTableRepository.findById(id).orElseThrow(() -> new RuntimeException("Teamtable not found by id:" + id + "."));
+    public TeamsTable findById(final Long id) {
+        return teamsTableRepository.findById(id).orElseThrow(
+                () -> new RuntimeException("Teamtable not found by id:" + id + "."));
     }
 
     @Override
-    public void addSprint(Sprint sprint, TeamsTable table) {
+    public void addSprint(final Sprint sprint, final TeamsTable table) {
         table.addSprint(sprint);
         teamsTableRepository.save(table);
     }

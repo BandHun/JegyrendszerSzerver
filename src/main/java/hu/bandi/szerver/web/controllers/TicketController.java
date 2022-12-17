@@ -47,8 +47,9 @@ public class TicketController {
 
     @GetMapping("/allbycompany")
     public ResponseEntity<List<Ticket>> getAllByCompanyTicket() {
-        return new ResponseEntity<>(ticketRepository.findByCompanyAndValid(CurrentUserService.getCurrentUser().getCompany(),true),
-                                    HttpStatus.OK);
+        return new ResponseEntity<>(
+                ticketRepository.findByCompanyAndValid(CurrentUserService.getCurrentUser().getCompany(), true),
+                HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -70,21 +71,20 @@ public class TicketController {
 
     @GetMapping("/alltouser")
     public ResponseEntity<List<Ticket>> getTicketByCompany() {
-        return new ResponseEntity<>(ticketRepository.findByCompanyAndValid(CurrentUserService.getCurrentUser().getCompany(), true),
-                                    HttpStatus.OK);
+        return new ResponseEntity<>(
+                ticketRepository.findByCompanyAndValid(CurrentUserService.getCurrentUser().getCompany(), true),
+                HttpStatus.OK);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket) {
-        System.out.println(ticket.getSprint());
-        System.out.println(ticket.getProject());
+    public ResponseEntity<Ticket> addTicket(@RequestBody final Ticket ticket) {
         return new ResponseEntity<>(ticketService.addTicket(ticket), HttpStatus.CREATED);
     }
 
     @PostMapping("/tosprint/{id}")
-    public ResponseEntity<?> tosprint(@PathVariable("id") Long id,@RequestBody Sprint sprint){
-        Ticket t = ticketService.findById(id);
-        if(sprint == null){
+    public ResponseEntity<?> tosprint(@PathVariable("id") final Long id, @RequestBody final Sprint sprint) {
+        final Ticket t = ticketService.findById(id);
+        if (sprint == null) {
             throw new RuntimeException("Wrong sprint");
         }
         t.setSprint(sprint);
@@ -98,9 +98,9 @@ public class TicketController {
     }
 
     @PostMapping("/changestatus/{id}")
-    public ResponseEntity<?> changeStatus(@PathVariable("id") final Long ticketId, @RequestBody final String status){
-        ticketService.changeTicketStatus(ticketId,TicketStatus.parse(status));
-        return new ResponseEntity<>( HttpStatus.OK);
+    public ResponseEntity<?> changeStatus(@PathVariable("id") final Long ticketId, @RequestBody final String status) {
+        ticketService.changeTicketStatus(ticketId, TicketStatus.parse(status));
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @PutMapping("/assigneto/{id}")
@@ -115,14 +115,12 @@ public class TicketController {
         return new ResponseEntity<>(ticketService.addToProject(ticketId, projectService.findById(projectId)),
                                     HttpStatus.OK);
     }
-    @PutMapping("/addtoteam/{id}")
-    public ResponseEntity<?> addtoProject(@PathVariable("id") final Long ticketId,
-                                               @RequestBody final Teams team) {
-        ticketService.addTeam(ticketId, team);
-        return new ResponseEntity<>(
-                HttpStatus.OK);
-    }
 
+    @PutMapping("/addtoteam/{id}")
+    public ResponseEntity<?> addtoProject(@PathVariable("id") final Long ticketId, @RequestBody final Teams team) {
+        ticketService.addTeam(ticketId, team);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 
     @PutMapping("/updateStatus/{id}")

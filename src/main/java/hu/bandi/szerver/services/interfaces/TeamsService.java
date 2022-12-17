@@ -23,6 +23,8 @@ public interface TeamsService {
     void setTable(Long teamsId, TeamsTable table);
 
     void addSprintTotable(Sprint sprint, Long teamid);
+
     Teams findTeamByTableId(long tableId);
+
     TeamsTable findTableByTeamId(Long teamid);
 }

@@ -16,7 +16,7 @@ public class JwtUtil {
 
     private final String secret = "ticketsecret";
 
-    private static final long exparationMillies = 1000*60*60*48; //2 nap
+    private static final long exparationMillies = 1000 * 60 * 60 * 48; //2 nap
 
     public String extractUsername(final String token) {
         return extractClaim(token, Claims::getSubject);
@@ -44,7 +44,7 @@ public class JwtUtil {
         return createToken(claims, username);
     }
 
-    public  static long getExpirationFromNow(){
+    public static long getExpirationFromNow() {
         return System.currentTimeMillis() + exparationMillies;
 
     }
@@ -52,9 +52,8 @@ public class JwtUtil {
     private String createToken(final Map<String, Object> claims, final String subject) {
 
         return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(
-                new Date(System.currentTimeMillis())).setExpiration(
-                new Date(getExpirationFromNow())).signWith(SignatureAlgorithm.HS512,
-                                                                                secret).compact();
+                new Date(System.currentTimeMillis())).setExpiration(new Date(getExpirationFromNow())).signWith(
+                SignatureAlgorithm.HS512, secret).compact();
     }
 
     public Boolean validateToken(final String token, final UserDetails userDetails) {

@@ -24,6 +24,7 @@ public class HourRecordServiceImpl implements HourRecordService {
 
     @Autowired
     UserService userService;
+
     @Override
     public List<HourRecords> getByTicket(final Long id) {
         return hourRecordRepository.findByTicketId(id);
@@ -31,11 +32,11 @@ public class HourRecordServiceImpl implements HourRecordService {
 
     @Override
     public HourRecords createHourRecord(final User user, final Ticket ticket, final Date toDate, long hours) {
-        List<HourRecords> records = getByTicket(ticket.getId());
-        for(HourRecords h:records){
-            hours+=h.getRecordedhours();
+        final List<HourRecords> records = getByTicket(ticket.getId());
+        for (final HourRecords h : records) {
+            hours += h.getRecordedhours();
         }
-        ticketService.setUsedStroyPoints(ticket,hours);
+        ticketService.setUsedStroyPoints(ticket, hours);
 
         return hourRecordRepository.save(new HourRecords(user, ticket, toDate, hours));
     }
@@ -58,8 +59,8 @@ public class HourRecordServiceImpl implements HourRecordService {
     }
 
     @Override
-    public long sumHoursForUser(final Long userId, Date toDate) {
-        final List<HourRecords> hours = hourRecordRepository.findByUserAndToDate(userService.findById(userId),toDate);
+    public long sumHoursForUser(final Long userId, final Date toDate) {
+        final List<HourRecords> hours = hourRecordRepository.findByUserAndToDate(userService.findById(userId), toDate);
         long sum = 0;
         for (final HourRecords hour : hours) {
             sum += hour.getRecordedhours();
@@ -68,19 +69,19 @@ public class HourRecordServiceImpl implements HourRecordService {
     }
 
     @Override
-    public long getUserWorkedHours(Long userid, Date fro){
-        final List<HourRecords> rec = hourRecordRepository.findByUserAndToDate(userService.findById(userid),fro);
+    public long getUserWorkedHours(final Long userid, final Date fro) {
+        final List<HourRecords> rec = hourRecordRepository.findByUserAndToDate(userService.findById(userid), fro);
         long ret = 0;
-        for(HourRecords h:rec){
-            if (h.getToDate().after(fro)){
-                ret+=h.getRecordedhours();
+        for (final HourRecords h : rec) {
+            if (h.getToDate().after(fro)) {
+                ret += h.getRecordedhours();
             }
         }
         return ret;
     }
 
     @Override
-    public Long getTicketUsetStorypoints(long ticketId) {
+    public Long getTicketUsetStorypoints(final long ticketId) {
         final List<HourRecords> hours = hourRecordRepository.findByTicketId(ticketId);
         long sum = 0;
         for (final HourRecords hour : hours) {

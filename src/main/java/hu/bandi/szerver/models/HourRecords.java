@@ -9,14 +9,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Date;
 
-
-
-/*
- * Elkönyvelt óra
- *
- * Szerepe, hogy nyílvántartsa, mely felhasználó és mely jegyre mennyi időt könyvelt
- * */
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -49,6 +41,6 @@ public class HourRecords implements Serializable {
         this.ticket = ticket;
         this.toDate = toDate;
         isValid = true;
-        this.company=user.getCompany();
+        this.company = user.getCompany();
     }
 }

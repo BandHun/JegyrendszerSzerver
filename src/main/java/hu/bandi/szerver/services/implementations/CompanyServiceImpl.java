@@ -30,19 +30,19 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public JoinCompanyRequest createJoinRequest(final Long companyId){
-        Company toJoin = findById(companyId);
-        JoinCompanyRequest request = new JoinCompanyRequest(toJoin, CurrentUserService.getCurrentUser());
+    public JoinCompanyRequest createJoinRequest(final Long companyId) {
+        final Company toJoin = findById(companyId);
+        final JoinCompanyRequest request = new JoinCompanyRequest(toJoin, CurrentUserService.getCurrentUser());
         return joinRequestRepository.save(request);
     }
 
     @Override
-    public List<JoinCompanyRequest> getJoinRequests(){
+    public List<JoinCompanyRequest> getJoinRequests() {
         return joinRequestRepository.findByUser(CurrentUserService.getCurrentUser());
     }
 
     @Override
-    public List<JoinCompanyRequest> getJoinRequestsByCompany(){
+    public List<JoinCompanyRequest> getJoinRequestsByCompany() {
         return joinRequestRepository.findByCompany(CurrentUserService.getCurrentUser().getCompany());
     }
 
@@ -81,8 +81,8 @@ public class CompanyServiceImpl implements CompanyService {
     public void deleteCompany(final Long comanyId) {
         final Company toDelete = getById(comanyId);
         toDelete.setValid(false);
-        List<User> users = toDelete.getUsers();
-        for(User user : users)  {
+        final List<User> users = toDelete.getUsers();
+        for (final User user : users) {
             userService.removeCompany(user, toDelete);
         }
         companyRepository.save(toDelete);
@@ -110,17 +110,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public void acceptJoinRequest(JoinCompanyRequest request) {
-        userService.joinCompany(request.getCompany(),request.getUser());
+    public void acceptJoinRequest(final JoinCompanyRequest request) {
+        userService.joinCompany(request.getCompany(), request.getUser());
 
-        for(JoinCompanyRequest r:joinRequestRepository.findByUser(request.getUser())){
-        joinRequestRepository.delete(r);
-    }}
+        for (final JoinCompanyRequest r : joinRequestRepository.findByUser(request.getUser())) {
+            joinRequestRepository.delete(r);
+        }
+    }
 
     @Override
-    public void declineJoinRequest(JoinCompanyRequest request) {
-request.setRequestStatus(RequestStatus.DECLINED);
-joinRequestRepository.save(request);
+    public void declineJoinRequest(final JoinCompanyRequest request) {
+        request.setRequestStatus(RequestStatus.DECLINED);
+        joinRequestRepository.save(request);
     }
 
 

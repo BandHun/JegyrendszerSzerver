@@ -2,7 +2,6 @@ package hu.bandi.szerver.web.controllers;
 
 import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.services.implementations.CurrentUserService;
-import hu.bandi.szerver.services.implementations.UserServiceImpl;
 import hu.bandi.szerver.services.interfaces.UserService;
 import hu.bandi.szerver.services.jwt.JwtUtil;
 import hu.bandi.szerver.web.requests.LoginRequest;
@@ -40,17 +39,11 @@ public class LoginController {
 
     @PostMapping("/gettoken")
     public ResponseEntity<?> generateToken(@Valid @RequestBody final LoginRequest loginRequest) throws Exception {
-        System.out.println("BEJELENTKEZES");
-
-        System.out.println(loginRequest.getUsername());
-
-        System.out.println(loginRequest.getPassword());
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
         final User user = userService.findByEmailaddrasse(loginRequest.getUsername());
-        System.out.println(user);
         return ResponseEntity.ok(
-                new JwtResponse(jwtUtil.generateToken(user.getEmailaddress()),JwtUtil.getExpirationFromNow()));
+                new JwtResponse(jwtUtil.generateToken(user.getEmailaddress()), JwtUtil.getExpirationFromNow()));
 
     }
 

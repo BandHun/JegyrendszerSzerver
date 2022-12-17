@@ -7,7 +7,7 @@ import java.util.List;
 public interface TicketService {
     void removeTicketsFromSprint(List<Ticket> t);
 
-    void setUsedStroyPoints(Ticket ticket,long hours);
+    void setUsedStroyPoints(Ticket ticket, long hours);
 
     List<Ticket> findAllTickets();
 

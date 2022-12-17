@@ -12,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -57,12 +56,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User leaveCompany(Long userId) {
-        User toEdit = findById(userId);
+    public User leaveCompany(final Long userId) {
+        final User toEdit = findById(userId);
         ticketService.removeUserFromAssignee(toEdit);
         toEdit.setCompany(null);
         return userRepository.save(toEdit);
-
     }
 
     @Override
@@ -88,12 +86,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User updateUser(final User user) {
-        User updatedUser = getUser(user.getId()).update(user);
+        final User updatedUser = getUser(user.getId()).update(user);
         return userRepository.save(updatedUser);
     }
 
     @Override
-    public User setAdmin(long userid) {
+    public User setAdmin(final long userid) {
         final User current = CurrentUserService.getCurrentUser();
         current.setUserLevel(UserLevel.ADMIN);
         return userRepository.save(current);
@@ -108,7 +106,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addCompany(User user, Company company) {
+    public User addCompany(final User user, final Company company) {
         user.setCompany(company);
         return userRepository.save(user);
     }
@@ -121,7 +119,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User addTeam(Long userId, Teams team) {
+    public User addTeam(final Long userId, final Teams team) {
         final User current = findById(userId);
         current.setTeams(team);
         return userRepository.save(current);
@@ -162,22 +160,22 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void removeCompany( User user, final Company company) {
+    public void removeCompany(final User user, final Company company) {
         user.setCompany(null);
         userRepository.save(user);
     }
 
     @Override
-    public void joinCompany(Company company, User user) {
-        User toJoin = findById(user.getId());
+    public void joinCompany(final Company company, final User user) {
+        final User toJoin = findById(user.getId());
         toJoin.setCompany(company);
         toJoin.setUserLevel(UserLevel.DEVELOPER);
         userRepository.save(toJoin);
     }
 
     @Override
-    public User setLevel(Long userId, UserLevel level) {
-        User toEdit = findById(userId);
+    public User setLevel(final Long userId, final UserLevel level) {
+        final User toEdit = findById(userId);
         toEdit.setUserLevel(level);
         return userRepository.save(toEdit);
     }

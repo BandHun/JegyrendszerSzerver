@@ -15,9 +15,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 
@@ -33,48 +30,26 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(final HttpServletRequest httpServletRequest,
                                     final HttpServletResponse httpServletResponse, final FilterChain filterChain) throws
             ServletException, IOException {
-        System.out.println("----------------------------------------------------------------------------------");
-        System.out.println(httpServletRequest.getRequestURL());
 
         final String authorizationHeader = httpServletRequest.getHeader("authorization");
-        System.out.println("Header JWTFILTER");
-        System.out.println(authorizationHeader);
-        /*List<String> lines = httpServletRequest.getReader().lines().collect(Collectors.toList());
-        for(String l : lines){
-            System.out.println(l);
-        }
-        /**/
 
         String token = null;
         String userName = null;
-
-        Enumeration<String> hs = httpServletRequest.getHeaderNames();
-        String a = hs.nextElement();
-
-        /*while(a!=null){
-            System.out.println(a);
-            a=hs.nextElement();
-        }*/
-
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             token = authorizationHeader.substring(7);
-            System.out.println("TOKEN");
-            System.out.println(token);
-            if(token.length()>4){
-                try{
-                    System.out.println("BENT");
-                    userName = jwtUtil.extractUsername(token);}catch (ExpiredJwtException e){
+            if (token.length() > 4) {
+                try {
+                    userName = jwtUtil.extractUsername(token);
+                } catch (final ExpiredJwtException e) {
                     httpServletResponse.setStatus(401);
                     return;
                 }
-            }
-            else {
-                token=null;
+            } else {
+                token = null;
             }
         }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            System.out.println(userName);
 
             final UserDetails userDetails = userService.loadUserByUsername(userName);
 

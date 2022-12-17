@@ -2,14 +2,12 @@ package hu.bandi.szerver.services.implementations;
 
 import hu.bandi.szerver.models.Comment;
 import hu.bandi.szerver.models.Document;
-import hu.bandi.szerver.models.User;
 import hu.bandi.szerver.repositories.CommentRepository;
 import hu.bandi.szerver.services.interfaces.CommentService;
 import hu.bandi.szerver.services.interfaces.DocumentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public Comment addComment(Comment comment) {
+    public Comment addComment(final Comment comment) {
         comment.setCreator(CurrentUserService.getCurrentUser());
         return commentRepository.save(comment);
     }
@@ -64,16 +62,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void addDocument(Document document, Long commentId) {
-Comment toEdit = findById(commentId);
-toEdit.addDocument(document);
-commentRepository.save(toEdit);
+    public void addDocument(final Document document, final Long commentId) {
+        final Comment toEdit = findById(commentId);
+        toEdit.addDocument(document);
+        commentRepository.save(toEdit);
     }
 
     @Override
-    public void removeDocument(Document document) {
-        List<Comment> all = commentRepository.findAll();
-        for(Comment c:all){
+    public void removeDocument(final Document document) {
+        final List<Comment> all = commentRepository.findAll();
+        for (final Comment c : all) {
             c.aremoveDocument(document);
             commentRepository.save(c);
         }

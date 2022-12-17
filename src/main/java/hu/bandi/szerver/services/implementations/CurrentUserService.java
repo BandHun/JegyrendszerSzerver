@@ -12,12 +12,11 @@ public class CurrentUserService {
     @Autowired
     static UserRepository userRepository;
 
-    public CurrentUserService(UserRepository userRepository){
-        this.userRepository=userRepository;
+    public CurrentUserService(final UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
     public static User getCurrentUser() {
-        return userRepository
-                .findByEmailaddress(SecurityContextHolder.getContext().getAuthentication().getName());
+        return userRepository.findByEmailaddress(SecurityContextHolder.getContext().getAuthentication().getName());
     }
 }

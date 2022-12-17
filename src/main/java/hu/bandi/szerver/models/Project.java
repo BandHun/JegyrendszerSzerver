@@ -7,15 +7,6 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-
-
-
-/*
- * Projekt
- *
- * Szerepe, hogy a jegyeket csoportokban tartsa és gyors keresést biztosítson
- * */
 
 @Entity
 @Data

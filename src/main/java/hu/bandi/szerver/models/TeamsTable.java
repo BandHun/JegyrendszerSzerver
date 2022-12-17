@@ -11,13 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-
-/*
- * Csapat Tábla
- *
- * Szerepe, hogy tárolja, a hozzá tartozó jegyeket.
- * */
-
 @Entity
 @Data
 @AllArgsConstructor
@@ -46,11 +39,16 @@ public class TeamsTable implements Serializable {
         this.teams = teams;
         isValid = true;
         this.backlog = new ArrayList<>();
-        this.sprints=new ArrayList<>();
+        this.sprints = new ArrayList<>();
     }
 
-    public void addSprint(final Sprint sprint){sprints.add(sprint);}
-    public void removeSprint(final Sprint sprint){sprints.remove(sprint);}
+    public void addSprint(final Sprint sprint) {
+        sprints.add(sprint);
+    }
+
+    public void removeSprint(final Sprint sprint) {
+        sprints.remove(sprint);
+    }
 
 
     public void addTicket(final Ticket ticket) {
