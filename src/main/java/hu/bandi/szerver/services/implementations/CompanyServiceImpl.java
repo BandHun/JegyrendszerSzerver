@@ -113,8 +113,9 @@ public class CompanyServiceImpl implements CompanyService {
     public void acceptJoinRequest(JoinCompanyRequest request) {
         userService.joinCompany(request.getCompany(),request.getUser());
 
-        joinRequestRepository.delete(request);
-    }
+        for(JoinCompanyRequest r:joinRequestRepository.findByUser(request.getUser())){
+        joinRequestRepository.delete(r);
+    }}
 
     @Override
     public void declineJoinRequest(JoinCompanyRequest request) {
