@@ -59,7 +59,6 @@ public class DocumentController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> addCompany(@PathVariable("id") final Long id) {
         final Document todelete = documentService.getById(id);
-        commentService.removeDocument(todelete);
         ticketService.deleteDocument(todelete);
         documentService.deleteDocument(todelete.getId());
         return new ResponseEntity<>(HttpStatus.OK);

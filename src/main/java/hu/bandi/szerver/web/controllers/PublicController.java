@@ -42,6 +42,6 @@ public class PublicController {
 
     @GetMapping("/ping")
     public ResponseEntity<String> ping() {
-        return new ResponseEntity<>("BBBBBBBBBBBBBBBBBBBBBB", HttpStatus.CREATED);
+        return new ResponseEntity<>("Ping teszt OK", HttpStatus.CREATED);
     }
 }

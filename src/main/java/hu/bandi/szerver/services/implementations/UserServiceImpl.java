@@ -162,6 +162,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void removeCompany(final User user, final Company company) {
         user.setCompany(null);
+        ticketService.removeUserFromAssignee(user);
         userRepository.save(user);
     }
 

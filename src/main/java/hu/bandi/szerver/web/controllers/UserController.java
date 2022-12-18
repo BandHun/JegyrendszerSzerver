@@ -99,8 +99,10 @@ public class UserController {
     }
 
     @PostMapping("/leavecompany")
-    public ResponseEntity<User> leaveCompany(@RequestBody final Long userId) {
-        return new ResponseEntity<>(userService.removeTeam(userService.findById(userId)), HttpStatus.OK);
+    public ResponseEntity<?> leaveCompany(@RequestBody final Long userId) {
+        final User leaveCompany = userService.findById(userId);
+        userService.removeCompany(leaveCompany, leaveCompany.getCompany());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 
